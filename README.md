@@ -1,4 +1,4 @@
-# PixelMarket - Comparador de Precios
+# PixelMarket - Comparador de Precios de Videojuegos
 
 [![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-blue?logo=github)](https://github.com/jcazorlap/PixelMarket.git)
 
@@ -36,7 +36,7 @@ npm install
 
 ### 3. Uso del Proyecto
 
-**Ejecutar todo el flujo (Scraping + Importación):**
+**Ejecutar el scraper:**
 ```bash
 cd backend
 php artisan app:import-games
