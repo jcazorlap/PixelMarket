@@ -1,0 +1,31 @@
+# Dependencies
+/scraper/venv/
+/backend/vendor/
+/frontend/node_modules/
+/frontend/dist/
+
+# Configuration
+.env
+/scraper/.env
+/backend/.env
+
+# Databases
+*.sqlite
+*.sqlite-journal
+
+# Logs and temp
+*.log
+/backend/storage/*.key
+/backend/storage/framework/cache/data/*
+/backend/storage/framework/sessions/*
+/backend/storage/framework/testing/*
+/backend/storage/framework/views/*.php
+/backend/storage/logs/*.log
+/backend/bootstrap/cache/*.php
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Output
+/scraper/games_data.json
