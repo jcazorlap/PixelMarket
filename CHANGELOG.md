@@ -7,6 +7,7 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 ### Inicialización del Proyecto
 - Creación de la estructura base: `frontend/`, `backend/`, `scraper/`.
 - Configuración de repositorio y documentación inicial (`README.md`, `CHANGELOG.md`).
+- Vinculación del proyecto con el repositorio de GitHub: `https://github.com/jcazorlap/PixelMarket.git`.
 
 ### Scraper (Python)
 - Implementación de `main.py` con **Playwright** para scraping asíncrono.

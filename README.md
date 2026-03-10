@@ -1,5 +1,7 @@
 # PixelMarket - Comparador de Precios de Videojuegos
 
+[![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-blue?logo=github)](https://github.com/jcazorlap/PixelMarket.git)
+
 PixelMarket es una plataforma integral diseñada para rastrear y comparar precios de videojuegos en diversas tiendas digitales (Steam, Epic Games, etc.). El sistema utiliza Inteligencia Artificial (Gemini) para procesar datos de sitios web y ofrece una interfaz moderna para los usuarios.
 
 ## Estructura del Proyecto
