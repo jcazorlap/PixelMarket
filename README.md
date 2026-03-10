@@ -16,43 +16,23 @@ El proyecto está dividido en tres módulos principales:
 
 ## Configuración y Ejecución
 
-### 1. Scraper (Extracción de Datos)
-El scraper lee URLs de `urls.txt`, navega a ellas y extrae información estructurada.
-
-```bash
-cd scraper
-python -m venv venv
-source venv/bin/activate  # En Windows: .\venv\Scripts\activate
-pip install -r requirements.txt
-playwright install chromium
-# Crea un archivo .env basado en .env.example y añade tu GEMINI_API_KEY
-python main.py
-```
-
-### 2. Backend (Servidor y Base de Datos)
-El backend procesa los datos scrapeados y los sirve a través de una API.
+### Ejecución Unificada
+Ahora puedes ejecutar todo el proceso (scraping + importación) con un solo comando desde la carpeta del backend:
 
 ```bash
 cd backend
-composer install
-php artisan migrate
-# Importa los datos generados por el scraper
 php artisan app:import-games
-php artisan serve
 ```
 
-### 3. Frontend (Interfaz de Usuario)
-```bash
-cd frontend
-npm install
-npm run dev
-```
+> [!IMPORTANT]
+> Asegúrate de haber instalado las dependencias del scraper y del backend antes de ejecutar el comando. El scraper requiere que `python` esté en el PATH del sistema.
 
 ---
 
 ## Flujo de Trabajo
-1. El **Scraper** genera un archivo `games_data.json` con la información de los juegos.
-2. El **Backend** importa este JSON mediante un comando de Artisan y lo guarda en la base de datos SQLite.
+1. El comando **Artisan** lanza el script de Python.
+2. El **Scraper** genera un archivo `games_data.json`.
+3. El **Backend** importa este JSON automáticamente a la base de datos SQLite.
 3. El **Frontend** (pendiente de implementación) consumirá la API del backend para mostrar los precios.
 
 ---

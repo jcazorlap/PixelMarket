@@ -2,6 +2,11 @@
 
 Todos los cambios notables en este proyecto serán documentados en este archivo.
 
+## [1.1.0] - 2026-03-10
+
+### Mejoras
+- Unificación del flujo: El comando `php artisan app:import-games` ahora ejecuta automáticamente el scraper de Python antes de procesar los datos.
+
 ## [1.0.0] - 2026-03-10
 
 ### Inicialización del Proyecto

@@ -17,7 +17,29 @@ class ImportGames extends Command
 
     public function handle()
     {
-        $jsonPath = base_path('../scraper/games_data.json');
+        $scraperDir = base_path('../scraper');
+        $jsonPath = $scraperDir . '/games_data.json';
+        
+        $this->info('Starting scraper...');
+
+        // Execute Python scraper
+        // We assume 'python' is in the PATH. The user should have the venv activated or dependencies installed globally.
+        // For better compatibility on Windows, we'll try 'python' then 'py'
+        $pythonBinary = 'python';
+        
+        $process = new \Symfony\Component\Process\Process([$pythonBinary, 'main.py'], $scraperDir);
+        $process->setTimeout(300); // 5 minutes timeout
+        
+        $process->run(function ($type, $buffer) {
+            $this->output->write($buffer);
+        });
+
+        if (!$process->isSuccessful()) {
+            $this->error('The scraper failed to execute.');
+            return 1;
+        }
+
+        $this->info('Scraper finished. Importing data...');
 
         if (!file_exists($jsonPath)) {
             $this->error("File not found: {$jsonPath}");
