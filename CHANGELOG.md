@@ -2,6 +2,11 @@
 
 Todos los cambios notables en este proyecto serán documentados en este archivo.
 
+## [1.1.1] - 2026-03-10
+
+### Documentación
+- Simplificación del `README.md`: Se ha reducido el contenido para enfocarse exclusivamente en la configuración esencial del proyecto.
+
 ## [1.1.0] - 2026-03-10
 
 ### Mejoras
