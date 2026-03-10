@@ -14,15 +14,6 @@ El proyecto está dividido en tres módulos principales:
 
 ---
 
-## Requisitos Previos
-
-- **Python 3.10+**
-- **PHP 8.2+** y **Composer**
-- **Node.js** y **npm**
-- **Clave de API de Google Gemini**
-
----
-
 ## Configuración y Ejecución
 
 ### 1. Scraper (Extracción de Datos)
