@@ -1,14 +1,10 @@
 import React from 'react';
 import GameCard from './GameCard';
 
+import LoadingSpinner from './LoadingSpinner';
+
 const GameList = ({ games, loading }) => {
-  if (loading) {
-    return (
-      <div style={{ textAlign: 'center', padding: '5rem', color: '#94a3b8' }}>
-        <h2>Cargando los mejores precios...</h2>
-      </div>
-    );
-  }
+  if (loading) return <LoadingSpinner />;
 
   return (
     <div className="game-grid">

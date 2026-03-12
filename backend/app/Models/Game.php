@@ -9,10 +9,15 @@ class Game extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'cover_image', 'category'];
+    protected $fillable = ['name', 'description', 'cover_image'];
 
     public function prices()
     {
         return $this->hasMany(GamePrice::class);
+    }
+
+    public function genres()
+    {
+        return $this->belongsToMany(Genre::class);
     }
 }

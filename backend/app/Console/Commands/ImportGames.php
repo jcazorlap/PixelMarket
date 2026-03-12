@@ -39,7 +39,8 @@ class ImportGames extends Command
             return 1;
         }
 
-        $this->info('Scraper finished. Importing data...');
+        $absoluteJsonPath = realpath($jsonPath) ?: $jsonPath;
+        $this->info("Scraper finished. Looking for data at: {$absoluteJsonPath}");
 
         if (!file_exists($jsonPath)) {
             $this->error("File not found: {$jsonPath}");
@@ -56,8 +57,24 @@ class ImportGames extends Command
         foreach ($data as $item) {
             $game = \App\Models\Game::updateOrCreate(
                 ['name' => $item['name']],
-                ['cover_image' => $item['cover_image'] ?? null]
+                [
+                    'cover_image' => $item['cover_image'] ?? null,
+                    'description' => $item['description'] ?? null,
+                ]
             );
+
+            // Handle genres
+            if (!empty($item['category'])) {
+                // Some categories might be comma-separated strings
+                $categories = array_map('trim', explode(',', $item['category']));
+                $genreIds = [];
+                foreach ($categories as $catName) {
+                    if ($catName === 'N/A') continue;
+                    $genre = \App\Models\Genre::firstOrCreate(['name' => $catName]);
+                    $genreIds[] = $genre->id;
+                }
+                $game->genres()->sync($genreIds);
+            }
 
             $store = \App\Models\Store::firstOrCreate(
                 ['name' => $item['store']]

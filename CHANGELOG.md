@@ -1,9 +1,12 @@
 # Changelog - PixelMarket
 
 ## 2026-03-12
+- **Sistema de Autenticación**: Implementación completa de registro, inicio de sesión, sesión persistente con Sanctum y gestión de perfil de usuario.
+- **Filtros Avanzados**: Añadido un slider de rango de precios (0€-100€) y un mega-menú de géneros inspirado en Steam.
+- **Estabilización del Scraper**: Corrección de errores de dependencias y actualización al modelo Gemini 2.5-flash para una extracción de datos más robusta.
+- **Importación de Datos**: Importación exitosa de 109 videojuegos reales con soporte completo para descripciones y sincronización de géneros/categorías.
 - Simplificación del diseño de las tarjetas para un aspecto más limpio, eliminando indicadores innecesarios de categoría y precio mínimo.
 - Rediseño de la sección principal (hero) con mayor tamaño de fuente y degradados de color más atractivos.
-- Mejora del scraper de IA para detectar automáticamente el género o categoría de los juegos.
 - Optimización de los enlaces de compra; en caso de no encontrar la URL específica, se redirige automáticamente a la página de la tienda oficial.
 
 ## 2026-03-11

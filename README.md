@@ -1,51 +1,48 @@
-# PixelMarket - Comparador de Precios de Videojuegos
+# PíxelMarket 🎮
 
-[![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-blue?logo=github)](https://github.com/jcazorlap/PixelMarket.git)
+PíxelMarket es un comparador de precios de videojuegos que agrega ofertas de múltiples tiendas digitales. Utiliza inteligencia artificial para extraer y categorizar datos, ofreciendo una experiencia de búsqueda avanzada con filtros y datos recopilados para recomendar juegos al usuario.
 
-## Configuración y ejecución
+## 🚀 Funcionamiento
 
-### 1. Variables de Entorno
-Crea un archivo `.env` en la carpeta `scraper/` basado en `.env.example` y añade tu clave:
+1.  **Scraping Inteligente**: Un script de Python recorre las tiendas digitales y utiliza la IA de Google Gemini para extraer nombres, precios, categorías y descripciones detalladas.
+2.  **Sincronización**: Los datos extraídos se importan al backend de Laravel mediante un comando Artisan.
+3.  **Exploración**: Los usuarios pueden navegar por el catálogo, utilizar el mega-menú de géneros, filtrar por rango de precio y gestionar su cuenta personal.
+
+---
+
+## 🛠️ Configuración para su uso
+
+### Variables de Entorno
+Crea `scraper/.env`:
 ```env
 GEMINI_API_KEY=tu_clave_aquí
 ```
 
-### 2. Instalación de Dependencias
+### Instalación y Ejecución
 
-**Scraper (Python):**
+**Scraper:**
 ```bash
 cd scraper
 python -m venv venv
-# Windows: .\venv\Scripts\activate | Linux: source venv/bin/activate
+# Activa el venv según tu OS (L: source venv/bin/activate | W: .\venv\Scripts\activate)
 pip install -r requirements.txt
-playwright install chromium
+python -m playwright install chromium
 ```
 
-**Backend (Laravel):**
+**Backend (API):**
 ```bash
 cd backend
 composer install
+cp .env.example .env
+php artisan key:generate
 php artisan migrate
+php artisan app:import-games # Importar datos iniciales
+php artisan serve
 ```
 
-**Frontend (React):**
+**Frontend (Web):**
 ```bash
 cd frontend
 npm install
-```
-
-### 3. Uso del Proyecto
-
-**Ejecutar el scraper:**
-```bash
-cd backend
-php artisan app:import-games
-```
-
-**Servidor de desarrollo:**
-```bash
-# Backend
-php artisan serve
-# Frontend
 npm run dev
 ```

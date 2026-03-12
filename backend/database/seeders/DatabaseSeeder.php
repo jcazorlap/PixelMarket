@@ -34,7 +34,31 @@ class DatabaseSeeder extends Seeder
             'PlayStation Store' => 'https://store.playstation.com/',
         ];
 
-        \App\Models\Game::factory(10)->create()->each(function ($game) use ($stores, $storeUrls) {
+        $genreNames = [
+            'Disparos en primera persona', 'Disparos en tercera persona', 'Hack and slash', 'Arcade y ritmo',
+            'Juegos de plataforma y corredores', 'Matamarcianos', 'Lucha y artes marciales', 'Objetos ocultos',
+            'Casuales', 'Metroidvania', 'Puzles', 'Rol de aventuras', 'Novelas visuales', 'Buena trama',
+            'Rol y acción', 'Rol, táctica y estrategia', 'Rol japonés', 'Roguelikes y roguelites',
+            'Rol por turnos', 'En grupo', 'Simuladores de construcción y automatización',
+            'Simuladores de aficiones y trabajos', 'Simuladores de citas', 'Simuladores de agricultura y fabricación',
+            'Simuladores de espacio y vuelo', 'Simuladores de vida e inmersivos', 'Simuladores de sandbox y de física',
+            'Estrategia por turnos', 'Estrategia en tiempo real', 'Defensa de torres', 'De cartas y tablero',
+            'Juegos de ciudades y asentamientos', 'Gran estrategia y 4X', 'Estrategia militar',
+            'Simulación y administración deportiva', 'Carreras', 'Simulador de carreras', 'Pesca y caza',
+            'Deportes de equipo', 'Deportes individuales', 'Deportes', 'Terror', 'Ciencia ficción y ciberpunk',
+            'Espacio', 'Mundo abierto', 'Anime', 'Supervivencia', 'Detectives y misterio'
+        ];
+
+        $genres = [];
+        foreach ($genreNames as $name) {
+            $genres[] = \App\Models\Genre::firstOrCreate(['name' => $name]);
+        }
+
+        \App\Models\Game::factory(10)->create()->each(function ($game) use ($stores, $storeUrls, $genres) {
+            // Attach 1-4 random genres
+            $randomGenres = collect($genres)->random(rand(1, 4));
+            $game->genres()->attach($randomGenres->pluck('id'));
+
             $numStores = rand(1, count($stores));
             $randomStores = collect($stores)->random($numStores);
 

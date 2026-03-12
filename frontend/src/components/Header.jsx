@@ -1,25 +1,33 @@
 import React from 'react';
-
+import { Link } from 'react-router-dom';
 import logoImg from '../assets/logoPixelMarket.png';
+import { useAuth } from '../context/AuthContext';
 
 const Header = () => {
   return (
     <header className="main-header">
-      <div className="logo-container">
+      <Link to="/" className="logo-container" style={{ textDecoration: 'none' }}>
         <img src={logoImg} alt="PixelMarket Logo" className="logo-img" />
         <div className="logo-text">PÍXEL<span className="accent-text">MARKET</span></div>
-      </div>
+      </Link>
       <Navbar />
     </header>
   );
 };
 
 const Navbar = () => {
+  const { user } = useAuth();
+
   return (
     <nav>
       <ul className="nav-links">
-        <li><a href="#">Catálogo</a></li>
-        <li><a href="#">Perfil</a></li>
+        <li><Link to="/">Catálogo</Link></li>
+        <li>
+          {user
+            ? <Link to="/perfil" className="nav-username">👤 {user.name}</Link>
+            : <Link to="/login">Perfil</Link>
+          }
+        </li>
         <li><a href="#">Soporte</a></li>
       </ul>
     </nav>
