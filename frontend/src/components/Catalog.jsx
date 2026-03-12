@@ -8,8 +8,8 @@ function Catalog() {
   const [selectedCategory, setSelectedCategory] = useState('Todos');
   const [currentPage, setCurrentPage] = useState(1);
   const [isMenuExpanded, setIsMenuExpanded] = useState(false);
-  const [priceRange, setPriceRange] = useState([0, 100]);
-  const [globalMaxPrice, setGlobalMaxPrice] = useState(100);
+  const [priceRange, setPriceRange] = useState([0, 150]);
+  const [globalMaxPrice, setGlobalMaxPrice] = useState(150);
   const itemsPerPage = 5;
 
   useEffect(() => {
@@ -112,7 +112,7 @@ function Catalog() {
               <input
                 type="range"
                 min={0}
-                max={100}
+                max={globalMaxPrice}
                 value={priceRange[0]}
                 className="range-input range-min"
                 onChange={e => {
@@ -123,7 +123,7 @@ function Catalog() {
               <input
                 type="range"
                 min={0}
-                max={100}
+                max={globalMaxPrice}
                 value={priceRange[1]}
                 className="range-input range-max"
                 onChange={e => {
@@ -134,13 +134,13 @@ function Catalog() {
               <div
                 className="range-track-fill"
                 style={{
-                  left: `${priceRange[0]}%`,
-                  width: `${priceRange[1] - priceRange[0]}%`
+                  left: `${(priceRange[0] / globalMaxPrice) * 100}%`,
+                  width: `${((priceRange[1] - priceRange[0]) / globalMaxPrice) * 100}%`
                 }}
               />
             </div>
-            {(priceRange[0] > 0 || priceRange[1] < 100) && (
-              <button className="clear-price-btn" onClick={() => setPriceRange([0, 100])}>
+            {(priceRange[0] > 0 || priceRange[1] < globalMaxPrice) && (
+              <button className="clear-price-btn" onClick={() => setPriceRange([0, globalMaxPrice])}>
                 × Quitar filtro de precio
               </button>
             )}

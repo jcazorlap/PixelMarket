@@ -2,9 +2,11 @@
 
 ## 2026-03-12
 - **Sistema de Autenticación**: Implementación completa de registro, inicio de sesión, sesión persistente con Sanctum y gestión de perfil de usuario.
-- **Filtros Avanzados**: Añadido un slider de rango de precios (0€-100€) y un mega-menú de géneros inspirado en Steam.
+- **Filtros Avanzados**: Añadido un slider de rango de precios (ahora hasta 150€) y un mega-menú de géneros inspirado en Steam.
 - **Estabilización del Scraper**: Corrección de errores de dependencias y actualización al modelo Gemini 2.5-flash para una extracción de datos más robusta.
 - **Importación de Datos**: Importación exitosa de 109 videojuegos reales con soporte completo para descripciones y sincronización de géneros/categorías.
+- **Páginas de Detalle**: Ahora muestran la descripción completa del juego y etiquetas de género dinámicas.
+- **Limpieza de Proyecto**: Eliminación de scripts de prueba y archivos temporales para un entorno de desarrollo limpio.
 - Simplificación del diseño de las tarjetas para un aspecto más limpio, eliminando indicadores innecesarios de categoría y precio mínimo.
 - Rediseño de la sección principal (hero) con mayor tamaño de fuente y degradados de color más atractivos.
 - Optimización de los enlaces de compra; en caso de no encontrar la URL específica, se redirige automáticamente a la página de la tienda oficial.
