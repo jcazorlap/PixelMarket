@@ -1,34 +1,40 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useEffect } from 'react'
+import Header from './components/Header'
+import GameList from './components/GameList'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [games, setGames] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch('http://localhost:8000/api/games')
+      .then(res => res.json())
+      .then(data => {
+        setGames(data)
+        setLoading(false)
+      })
+      .catch(err => {
+        console.error('Error fetching games:', err)
+        setLoading(false)
+      })
+  }, [])
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div className="app-container">
+      <Header />
+      
+      <main className="hero">
+        <h1>Encuentra tu próximo juego <span className="gradient-text">al mejor precio</span></h1>
+        <p>Comparamos los precios de las mejores tiendas digitales en tiempo real. No pierdas más el tiempo buscando, nosotros lo hacemos por ti.</p>
+      </main>
+
+      <GameList games={games} loading={loading} />
+
+      <footer style={{ padding: '4rem 2rem', textAlign: 'center', borderTop: '1px solid var(--glass-border)', marginTop: 'auto', color: 'var(--text-muted)' }}>
+        <p>© 2026 PixelMarket. Todos los derechos reservados.</p>
+      </footer>
+    </div>
   )
 }
 

@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Game extends Model
 {
-    protected $fillable = ['name', 'cover_image'];
+    use HasFactory;
+
+    protected $fillable = ['name', 'cover_image', 'category'];
 
     public function prices()
     {

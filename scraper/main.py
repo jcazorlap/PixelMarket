@@ -31,6 +31,7 @@ async def get_game_data_from_gemini(text):
     Extract the following information from the text below and return it as a valid JSON object.
     Fields:
     - name: Name of the videogame
+    - category: Category of the game (e.g., Action, RPG, Indie, Adventure, etc.)
     - cover_image: URL of the cover image
     - store: Name of the store (e.g., Steam, Epic Games, etc.)
     - price: Current price as a decimal number (or 0 if free)
@@ -50,6 +51,13 @@ async def get_game_data_from_gemini(text):
         print(f"Error with Gemini API: {e}")
         return None
 
+DEFAULT_STORE_URLS = {
+    "Steam": "https://store.steampowered.com/",
+    "Epic Games": "https://store.epicgames.com/",
+    "GOG": "https://www.gog.com/",
+    "PlayStation Store": "https://store.playstation.com/",
+}
+
 async def main():
     urls_file = Path("urls.txt")
     if not urls_file.exists():
@@ -68,7 +76,15 @@ async def main():
             if text:
                 data = await get_game_data_from_gemini(text)
                 if data:
-                    data['url_link'] = url # Keep track of the source
+                    # If Gemini didn't find a specific URL, or if we want to ensure we have one
+                    if not data.get('url_link'):
+                        data['url_link'] = url # Use the source URL as fallback
+                    
+                    # Ensure a fallback based on store name if everything else fails
+                    store_name = data.get('store', '')
+                    if not data.get('url_link') and store_name in DEFAULT_STORE_URLS:
+                        data['url_link'] = DEFAULT_STORE_URLS[store_name]
+                        
                     games_data.append(data)
         
         await browser.close()
