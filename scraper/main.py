@@ -22,35 +22,67 @@ async def scrape_url(browser, url):
         await asyncio.sleep(3)
         await page.mouse.wheel(0, -2000)
         await asyncio.sleep(1)
-        # Extract visible text only to avoid HTML bloat
-        text_content = await page.evaluate("document.body.innerText")
-        print(f"Extracted {len(text_content)} characters from {url}")
-        return text_content
+        
+        # Extract visible text and images
+        extraction_data = await page.evaluate("""() => {
+            const images = Array.from(document.querySelectorAll('img')).map(img => ({
+                src: img.src,
+                alt: img.alt || '',
+                score: (img.alt.toLowerCase().includes('cover') || img.src.toLowerCase().includes('cover') || img.alt.toLowerCase().includes('header') || img.src.toLowerCase().includes('header')) ? 10 : 0
+            })).filter(img => img.src && img.src.startsWith('http') && !img.src.includes('icon') && !img.src.includes('avatar'));
+            
+            // Sort by score and take top 30
+            const sortedImages = images.sort((a, b) => b.score - a.score).slice(0, 30);
+            
+            return {
+                text: document.body.innerText,
+                images: sortedImages
+            };
+        }""")
+        
+        print(f"Extracted {len(extraction_data['text'])} characters and {len(extraction_data['images'])} images from {url}")
+        return extraction_data
     except Exception as e:
         print(f"Error scraping {url}: {e}")
         return None
     finally:
         await page.close()
 
-async def get_game_data_from_gemini(text):
+async def get_game_data_from_gemini(extraction_data):
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
         print("Error: GEMINI_API_KEY is not set.")
         return None
 
-    print(f"Sending {len(text)} characters to Gemini...")
-    prompt = f"""
-    Extract as many videogames as possible from the text below and return them as a valid JSON list of objects.
-    Each object must have these fields:
-    - name: Name of the videogame
-    - category: Category of the game (e.g., Action, RPG, Indie, Adventure, etc.)
-    - description: A brief description or summary of the game (approx 200-300 characters)
-    - cover_image: URL of the cover image
-    - store: Name of the store (e.g., Steam, Epic Games, etc.)
-    - price: Current price as a decimal number (or 0 if free)
+    text = extraction_data['text']
+    images = extraction_data['images']
 
-    Text:
-    {text[:15000]}
+    print(f"Sending {len(text)} characters and {len(images)} image URLs to Gemini...")
+    
+    # Format images for the prompt - make it more concise
+    images_str = "\n".join([f"- URL: {img['src']} (Alt: {img['alt']})" for img in images])
+
+    prompt = f"""
+    Eres un experto en extracción de datos de videojuegos. Tu tarea es extraer la mayor cantidad posible de videojuegos del texto y la lista de URLs de imágenes proporcionadas.
+
+    INSTRUCCIONES CRÍTICAS:
+    1. IDIOMA: Los campos 'category' y 'description' DEBEN estar en ESPAÑOL.
+    2. IMAGEN: El campo 'cover_image' NO puede estar vacío. Debes seleccionar la URL más probable de la lista proporcionada que corresponda a la portada o imagen principal del juego.
+    3. JSON: Devuelve unicamente una lista JSON válida.
+
+    CAMPOS POR JUEGO:
+    - name: Nombre del videojuego.
+    - category: Categoría en ESPAÑOL.
+    - description: Resumen de 200-300 caracteres en ESPAÑOL.
+    - cover_image: URL de la imagen de portada de la lista proporcionada (OBLIGATORIO).
+    - store: Nombre de la tienda.
+    - price: Precio decimal (0 si es gratis).
+
+    LISTA DE URLs DE IMÁGENES DISPONIBLES:
+    {images_str}
+
+    TEXTO DE LA PÁGINA:
+    {text[:10000]}
     """
     
     try:

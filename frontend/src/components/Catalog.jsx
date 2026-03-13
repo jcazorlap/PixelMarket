@@ -3,6 +3,7 @@ import GameList from './GameList'
 
 function Catalog() {
   const [games, setGames] = useState([]);
+  const [genres, setGenres] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('Todos');
@@ -10,71 +11,93 @@ function Catalog() {
   const [isMenuExpanded, setIsMenuExpanded] = useState(false);
   const [priceRange, setPriceRange] = useState([0, 150]);
   const [globalMaxPrice, setGlobalMaxPrice] = useState(150);
-  const itemsPerPage = 5;
+  const itemsPerPage = 10; // Increased for better UX
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/games')
-      .then(res => res.json())
-      .then(data => {
-        setGames(data);
+    // Fetch games and genres in parallel
+    Promise.all([
+      fetch('http://localhost:8000/api/games').then(res => res.json()),
+      fetch('http://localhost:8000/api/genres').then(res => res.json())
+    ])
+      .then(([gamesData, genresData]) => {
+        setGames(gamesData);
+        setGenres(genresData);
         setLoading(false);
+
+        // Update globalMaxPrice based on actual data
+        const maxPrice = gamesData.reduce((max, game) => {
+          const gameMin = getMinPrice(game);
+          return (gameMin > max) ? gameMin : max;
+        }, 150);
+        setGlobalMaxPrice(Math.ceil(maxPrice));
+        setPriceRange([0, Math.ceil(maxPrice)]);
       })
       .catch(err => {
-        console.error("Error fetching games:", err);
+        console.error("Error fetching data:", err);
         setLoading(false);
       });
   }, []);
 
-  // Reset page when filters change
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchTerm, selectedCategory, priceRange]);
+  // Helper: get minimum price for a game across all stores
+  const getMinPrice = (game) => {
+    if (!game.prices || game.prices.length === 0) return 0;
+    return Math.min(...game.prices.map(p => parseFloat(p.price)));
+  };
 
-  // Categorize genres for the Steam-style menu
+  // Static definition of categories for grouping
   const genreCategories = {
     "Acción & Disparos": [
-      "Disparos en primera persona", "Disparos en tercera persona", "Hack and slash",
-      "Arcade y ritmo", "Juegos de plataforma y corredores", "Matamarcianos",
-      "Lucha y artes marciales", "Mundo abierto"
+      "Acción", "Disparos", "Disparos en primera persona", "Disparos en tercera persona",
+      "Hack and slash", "Arcade", "Lucha", "Mundo abierto", "Zombis", "FPS", "Shooter", "Action"
     ],
     "Rol (RPG)": [
-      "Rol y acción", "Rol, táctica y estrategia", "Rol japonés",
-      "Roguelikes y roguelites", "Rol por turnos", "En grupo", "Metroidvania"
+      "Rol", "RPG", "JRPG", "Roguelike", "Roguelite", "Metroidvania", "Souls-like", "Rol de acción"
     ],
     "Estrategia": [
-      "Estrategia por turnos", "Estrategia en tiempo real", "Defensa de torres",
-      "De cartas y tablero", "Juegos de ciudades y asentamientos", "Gran estrategia y 4X",
-      "Estrategia militar"
+      "Estrategia", "Estrategia por turnos", "Estrategia en tiempo real", "Defensa de torres",
+      "Cartas", "Tablero", "Construcción de ciudades", "4X", "Tactical"
     ],
     "Simulación": [
-      "Simuladores de construcción y automatización", "Simuladores de aficiones y trabajos",
-      "Simuladores de citas", "Simuladores de agricultura y fabricación",
-      "Simuladores de espacio y vuelo", "Simuladores de vida e inmersivos",
-      "Simuladores de sandbox y de física", "Simulación y administración deportiva"
+      "Simulación", "Simulador", "Construcción", "Gestión", "Sandbox", "Vida", "Física"
     ],
     "Deportes & Carreras": [
-      "Deportes", "Deportes de equipo", "Deportes individuales", "Carreras",
-      "Simulador de carreras", "Pesca y caza"
+      "Deportes", "Fútbol", "Carreras", "Conducción", "Sports"
     ],
     "Temáticas & Otros": [
-      "Terror", "Ciencia ficción y ciberpunk", "Espacio", "Anime",
-      "Supervivencia", "Detectives y misterio", "Puzles", "Casuales",
-      "Objetos ocultos", "Novelas visuales", "Buena trama"
+      "Terror", "Horror", "Ciencia ficción", "Espacio", "Anime", "Supervivencia",
+      "Puzles", "Aventura", "Casual", "Indie", "Plataformas"
     ]
   };
 
-  // Helper: get minimum price for a game across all stores
-  const getMinPrice = (game) => {
-    if (!game.prices || game.prices.length === 0) return null;
-    return Math.min(...game.prices.map(p => parseFloat(p.price)));
-  };
+  // Group fetched genres into the defined categories
+  const groupedGenres = {};
+  const processedGenreNames = new Set();
+
+  Object.entries(genreCategories).forEach(([catName, keywords]) => {
+    const matchingGenres = genres.filter(g =>
+      !processedGenreNames.has(g.name) &&
+      keywords.some(k => g.name.toLowerCase().includes(k.toLowerCase()))
+    );
+
+    if (matchingGenres.length > 0) {
+      groupedGenres[catName] = matchingGenres;
+      matchingGenres.forEach(g => processedGenreNames.add(g.name));
+    }
+  });
+
+  // Add remaining genres to "Otros"
+  const remainingGenres = genres.filter(g => !processedGenreNames.has(g.name));
+  if (remainingGenres.length > 0) {
+    if (!groupedGenres["Más Categorías"]) groupedGenres["Más Categorías"] = [];
+    groupedGenres["Más Categorías"] = [...(groupedGenres["Más Categorías"] || []), ...remainingGenres];
+  }
 
   const filteredGames = games.filter(game => {
     const matchesSearch = game.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesGenre = selectedCategory === 'Todos' ||
       (game.genres && game.genres.some(g => g.name === selectedCategory));
     const minPrice = getMinPrice(game);
-    const matchesPrice = minPrice === null || (minPrice >= priceRange[0] && minPrice <= priceRange[1]);
+    const matchesPrice = minPrice >= priceRange[0] && minPrice <= priceRange[1];
     return matchesSearch && matchesGenre && matchesPrice;
   });
 
@@ -149,12 +172,14 @@ function Catalog() {
           <aside className="genre-sidebar">
             <div className="sidebar-header-row">
               <h2 className="section-subtitle">GÉNEROS</h2>
-              <button
-                className="toggle-expand-btn"
-                onClick={() => setIsMenuExpanded(!isMenuExpanded)}
-              >
-                {isMenuExpanded ? 'Contraer ▲' : 'Ampliar ▼'}
-              </button>
+              {genres.length > 5 && (
+                <button
+                  className="toggle-expand-btn"
+                  onClick={() => setIsMenuExpanded(!isMenuExpanded)}
+                >
+                  {isMenuExpanded ? 'Contraer ▲' : 'Ampliar ▼'}
+                </button>
+              )}
             </div>
 
             {/* Always-visible: "Todos" option */}
@@ -163,23 +188,23 @@ function Catalog() {
                 className={selectedCategory === 'Todos' ? 'active' : ''}
                 onClick={() => setSelectedCategory('Todos')}
               >
-                Todos los géneros
+                Todos los géneros ({games.length})
               </li>
             </ul>
 
             {/* Expandable full grid */}
-            <div className={`sidebar-genre-grid ${isMenuExpanded ? 'expanded' : ''}`}>
-              {Object.entries(genreCategories).map(([category, genres]) => (
+            <div className={`sidebar-genre-grid ${isMenuExpanded || genres.length < 8 ? 'expanded' : ''}`}>
+              {Object.entries(groupedGenres).map(([category, activeGenres]) => (
                 <div key={category} className="genre-column">
                   <h3 className="column-title">{category}</h3>
                   <ul className="genre-link-list">
-                    {genres.map(genre => (
+                    {activeGenres.map(genre => (
                       <li
-                        key={genre}
-                        className={selectedCategory === genre ? 'active' : ''}
-                        onClick={() => setSelectedCategory(genre)}
+                        key={genre.id}
+                        className={selectedCategory === genre.name ? 'active' : ''}
+                        onClick={() => setSelectedCategory(genre.name)}
                       >
-                        {genre}
+                        {genre.name}
                       </li>
                     ))}
                   </ul>

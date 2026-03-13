@@ -7,7 +7,8 @@ use App\Http\Controllers\Api\GameController;
 use App\Http\Controllers\Api\AuthController;
 
 // Games
-Route::get('/games', [GameController::class, 'index']);
+Route::get('/games',  [GameController::class, 'index']);
+Route::get('/genres', [GameController::class, 'genres']);
 
 // Auth (public)
 Route::post('/register', [AuthController::class, 'register']);

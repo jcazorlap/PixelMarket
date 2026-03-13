@@ -1,5 +1,13 @@
 # Changelog - PixelMarket
 
+## 2026-03-13
+- **Localización al Español**: El scraper ahora extrae descripciones y categorías directamente en español para una mejor experiencia de usuario.
+- **Extracción de Imágenes**: Optimización masiva de la captura de imágenes de portada reales desde los CDNs de las tiendas, asegurando que cada juego tenga su imagen correcta.
+- **Comandos de Importación**: Se han añadido las opciones `--fresh` y `--skip-scraper` al comando de Artisan para permitir limpiezas de base de datos e importaciones de JSON rápidas.
+- **Filtros Dinámicos de Género**: El menú lateral ahora se genera automáticamente basándose solo en los géneros que tienen juegos asociados en la base de datos.
+- **Calibración de Precios**: El slider de filtros de precio ahora se ajusta dinámicamente al precio máximo real detectado entre todos los productos.
+- **Documentación y Correcciones**: Actualización del README con los nuevos comandos y resolución de errores de renderizado en el catálogo.
+
 ## 2026-03-12
 - **Sistema de Autenticación**: Implementación completa de registro, inicio de sesión, sesión persistente con Sanctum y gestión de perfil de usuario.
 - **Filtros Avanzados**: Añadido un slider de rango de precios (ahora hasta 150€) y un mega-menú de géneros inspirado en Steam.

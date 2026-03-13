@@ -36,7 +36,10 @@ composer install
 cp .env.example .env
 php artisan key:generate
 php artisan migrate
-php artisan app:import-games # Importar datos iniciales
+php artisan app:import-games # Ejecuta el scraper e importa los datos
+# También puedes usar:
+# php artisan app:import-games --fresh        # Borra juegos antiguos antes de importar
+# php artisan app:import-games --skip-scraper # Importa el JSON actual sin ejecutar el scraper
 php artisan serve
 ```
 

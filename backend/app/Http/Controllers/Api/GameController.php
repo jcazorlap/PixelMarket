@@ -14,4 +14,10 @@ class GameController extends Controller
         $games = Game::with(['prices.store', 'genres'])->get();
         return response()->json($games);
     }
+
+    public function genres()
+    {
+        $genres = \App\Models\Genre::has('games')->orderBy('name')->get();
+        return response()->json($genres);
+    }
 }
