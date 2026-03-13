@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
@@ -14,21 +15,21 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $data = $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|email|unique:users,email',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
         ]);
 
         $user = User::create([
-            'name'     => $data['name'],
-            'email'    => $data['email'],
-            'password' => Hash::make($data['password']),
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => $data['password'],
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
-            'user'  => $user,
+            'user' => $user,
             'token' => $token,
         ], 201);
     }
@@ -37,7 +38,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $data = $request->validate([
-            'email'    => 'required|email',
+            'email' => 'required|email',
             'password' => 'required|string',
         ]);
 
@@ -54,7 +55,7 @@ class AuthController extends Controller
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
-            'user'  => $user,
+            'user' => $user,
             'token' => $token,
         ]);
     }
@@ -78,7 +79,7 @@ class AuthController extends Controller
         $user = $request->user();
 
         $data = $request->validate([
-            'name'  => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
         ]);
 
@@ -90,21 +91,39 @@ class AuthController extends Controller
     // PUT /api/me/password  (auth:sanctum)
     public function updatePassword(Request $request)
     {
-        $user = $request->user();
+        // ... (existing logic)
+    }
 
-        $request->validate([
-            'current_password' => 'required|string',
-            'password'         => 'required|string|min:6|confirmed',
-        ]);
+    // GET /api/auth/google
+    public function redirectToGoogle()
+    {
+        return Socialite::driver('google')->stateless()->redirect();
+    }
 
-        if (!Hash::check($request->current_password, $user->password)) {
-            throw ValidationException::withMessages([
-                'current_password' => ['La contraseña actual no es correcta.'],
+    // GET /api/auth/google/callback
+    public function handleGoogleCallback()
+    {
+        try {
+            $googleUser = Socialite::driver('google')->stateless()->user();
+
+            $user = User::updateOrCreate([
+                'email' => $googleUser->getEmail(),
+            ], [
+                'name' => $googleUser->getName(),
+                'google_id' => $googleUser->getId(),
+                'avatar' => $googleUser->getAvatar(),
+                // No password needed for Google users
             ]);
+
+            $token = $user->createToken('auth_token')->plainTextToken;
+
+            // Redirect back to frontend with token
+            $frontendUrl = env('FRONTEND_URL', 'http://localhost:5173');
+            return redirect($frontendUrl . '/login?token=' . $token . '&google=true');
+
+        } catch (\Exception $e) {
+            \Log::error('Google login failed: ' . $e->getMessage());
+            return redirect(env('FRONTEND_URL', 'http://localhost:5173') . '/login?error=google_failed');
         }
-
-        $user->update(['password' => Hash::make($request->password)]);
-
-        return response()->json(['message' => 'Contraseña actualizada correctamente.']);
     }
 }

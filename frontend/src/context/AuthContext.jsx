@@ -30,10 +30,30 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  const login = (newToken, userData) => {
+  const login = async (newToken, userData) => {
+    setLoading(true);
     localStorage.setItem('pm_token', newToken);
     setToken(newToken);
-    setUser(userData);
+    
+    if (userData) {
+      setUser(userData);
+      setLoading(false);
+    } else {
+      // Fetch user data if not provided (e.g., Google login)
+      try {
+        const res = await fetch(`${API}/me`, {
+          headers: { Authorization: `Bearer ${newToken}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setUser(data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch user after login", err);
+      } finally {
+        setLoading(false);
+      }
+    }
   };
 
   const logout = async () => {
