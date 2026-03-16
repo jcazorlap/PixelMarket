@@ -1,5 +1,20 @@
 # Changelog - PixelMarket
 
+## 2026-03-16
+- **Rediseño Estético de Marcadores**: Actualización del icono de "Deseados", reemplazando el corazón por un marcador (bookmark) más alineado con la temática de colección.
+- **Identidad Visual Cyan**: El estado activo de los marcadores y filtros de la lista de deseos ahora utiliza el color cian vibrante (`#1FB6E9`) para una coherencia visual total.
+- **Optimización de Estabilidad**: Resolución de conflictos de renderizado y restauración de dependencias críticas de React que aseguraron la carga correcta del catálogo.
+
+## 2026-03-15
+- **Integración de Lista de Deseos (Frontend)**: Implementación de la infraestructura frontend para gestionar la lista de deseos en tiempo real.
+- **Botón de Guardado Dinámico**: Añadida la funcionalidad de "Añadir a Deseados" en la página de detalles del juego, con estados de carga y sincronización con la sesión del usuario.
+- **Filtro de Catálogo "Deseados"**: Nuevo interruptor inteligente al lado del buscador que permite filtrar instantáneamente la biblioteca para ver solo los juegos guardados.
+
+## 2026-03-14
+- **Infraestructura de Base de Datos**: Creación de la tabla pivote `wishlists` y establecimiento de las relaciones muchos-a-muchos en los modelos `User` y `Game`.
+- **API de Deseos**: Desarrollo de controladores y rutas protegidas con Sanctum para recuperar, añadir y eliminar juegos de la lista de deseos del usuario.
+- **Actualización de Entorno**: Upgrade del motor de ejecución Node.js a la versión 24.14 para compatibilidad total con las herramientas de construcción modernas.
+
 ## 2026-03-13
 - **Inicio de Sesión con Google**: Integración completa con Google OAuth mediante Laravel Socialite y React, permitiendo un acceso rápido y seguro.
 - **Corrección de Autenticación**: Resolución del error de "doble-hashing" que impedía el inicio de sesión y registro de usuarios convencionales.

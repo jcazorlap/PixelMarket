@@ -1567,3 +1567,117 @@ h3,
   width: 20px;
   height: 20px;
 }
+/* Wishlist Styles */
+.title-wishlist-group {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.wishlist-toggle-btn {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  color: var(--text-muted);
+  width: 48px;
+  height: 48px;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
+}
+
+.wishlist-toggle-btn:hover {
+  border-color: #ff4757;
+  color: #ff4757;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 71, 87, 0.2);
+}
+
+.wishlist-toggle-btn.active {
+  background: rgba(255, 71, 87, 0.1);
+  border-color: #ff4757;
+  color: #ff4757;
+}
+
+.wishlist-toggle-btn svg {
+  width: 24px;
+  height: 24px;
+  transition: transform 0.3s ease;
+}
+
+.wishlist-toggle-btn.active svg {
+  transform: scale(1.1);
+}
+
+.wishlist-toggle-btn.loading {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.search-wishlist-group {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+}
+
+.wishlist-filter-btn {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  color: var(--text-muted);
+  height: 48px;
+  padding: 0 1.25rem;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+}
+
+.wishlist-filter-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--accent-primary);
+  color: #fff;
+}
+
+.wishlist-filter-btn.active {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: white;
+  box-shadow: var(--neon-shadow);
+}
+
+.wishlist-filter-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Updated Bookmark Styles */
+.wishlist-toggle-btn.active {
+  background: rgba(31, 182, 233, 0.1);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+.wishlist-toggle-btn:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+
+/* Catalog Bookmark Fix */
+.wishlist-filter-btn.active svg {
+  fill: currentColor;
+}
+

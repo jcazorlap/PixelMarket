@@ -1,7 +1,9 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import GameList from './GameList'
+import { useAuth } from '../context/AuthContext'
 
 function Catalog() {
+  const { user, token } = useAuth();
   const [games, setGames] = useState([]);
   const [genres, setGenres] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -11,7 +13,9 @@ function Catalog() {
   const [isMenuExpanded, setIsMenuExpanded] = useState(false);
   const [priceRange, setPriceRange] = useState([0, 150]);
   const [globalMaxPrice, setGlobalMaxPrice] = useState(150);
-  const itemsPerPage = 10; // Increased for better UX
+  const [showWishlistOnly, setShowWishlistOnly] = useState(false);
+  const [wishlistIds, setWishlistIds] = useState(new Set());
+  const itemsPerPage = 10;
 
   useEffect(() => {
     // Fetch games and genres in parallel
@@ -36,7 +40,19 @@ function Catalog() {
         console.error("Error fetching data:", err);
         setLoading(false);
       });
-  }, []);
+
+    // Fetch wishlist IDs if logged in
+    if (user && token) {
+      fetch('http://localhost:8000/api/wishlist', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+        .then(res => res.json())
+        .then(data => {
+          setWishlistIds(new Set(data.map(g => g.id)));
+        })
+        .catch(err => console.error("Error fetching wishlist:", err));
+    }
+  }, [user, token]);
 
   // Helper: get minimum price for a game across all stores
   const getMinPrice = (game) => {
@@ -98,7 +114,9 @@ function Catalog() {
       (game.genres && game.genres.some(g => g.name === selectedCategory));
     const minPrice = getMinPrice(game);
     const matchesPrice = minPrice >= priceRange[0] && minPrice <= priceRange[1];
-    return matchesSearch && matchesGenre && matchesPrice;
+    const matchesWishlist = !showWishlistOnly || wishlistIds.has(game.id);
+
+    return matchesSearch && matchesGenre && matchesPrice && matchesWishlist;
   });
 
   // Pagination logic
@@ -224,18 +242,33 @@ function Catalog() {
               )}
             </div>
 
-            <div className="search-container">
-              <input
-                type="text"
-                placeholder="Buscar en la tienda..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="search-input"
-              />
-              <svg className="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
+            <div className="search-wishlist-group">
+              <div className="search-container">
+                <input
+                  type="text"
+                  placeholder="Buscar en la tienda..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="search-input"
+                />
+                <svg className="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+              </div>
+
+              {user && (
+                <button
+                  className={`wishlist-filter-btn ${showWishlistOnly ? 'active' : ''}`}
+                  onClick={() => setShowWishlistOnly(!showWishlistOnly)}
+                  title={showWishlistOnly ? "Ver todos los juegos" : "Ver mi lista de deseos"}
+                >
+                  <svg viewBox="0 0 24 24" fill={showWishlistOnly ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                  {showWishlistOnly ? "Ver todos" : "Deseados"}
+                </button>
+              )}
             </div>
           </div>
 

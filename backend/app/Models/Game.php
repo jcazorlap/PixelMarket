@@ -20,4 +20,12 @@ class Game extends Model
     {
         return $this->belongsToMany(Genre::class);
     }
+
+    /**
+     * Get the users who have wishlisted this game.
+     */
+    public function wishlistedBy()
+    {
+        return $this->belongsToMany(User::class, 'wishlists')->withTimestamps();
+    }
 }

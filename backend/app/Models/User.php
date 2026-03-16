@@ -49,4 +49,12 @@ class User extends Authenticatable
             'google_id' => 'string',
         ];
     }
+
+    /**
+     * Get the games in the user's wishlist.
+     */
+    public function wishlist()
+    {
+        return $this->belongsToMany(Game::class, 'wishlists')->withTimestamps();
+    }
 }

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\GameController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\WishlistController;
 
 // Games
 Route::get('/games',  [GameController::class, 'index']);
@@ -24,4 +25,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me',              [AuthController::class, 'me']);
     Route::put('/me',              [AuthController::class, 'update']);
     Route::put('/me/password',     [AuthController::class, 'updatePassword']);
+
+    // Wishlist
+    Route::get('/wishlist',              [WishlistController::class, 'index']);
+    Route::post('/wishlist/toggle/{game}', [WishlistController::class, 'toggle']);
+    Route::get('/wishlist/check/{game}',  [WishlistController::class, 'check']);
 });

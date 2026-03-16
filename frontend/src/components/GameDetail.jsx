@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import LoadingSpinner from './LoadingSpinner';
+import { useAuth } from '../context/AuthContext';
 
 
 const GameDetail = () => {
   const { id } = useParams();
+  const { user, token } = useAuth();
   const [game, setGame] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isWishlisted, setIsWishlisted] = useState(false);
+  const [wishlistLoading, setWishlistLoading] = useState(false);
 
   useEffect(() => {
-    // In a real app, we might have an endpoint like GET /api/games/{id}
-    // For now, we fetch all and filter, or assuming the API handles it
+    // Fetch game details
     fetch(`http://localhost:8000/api/games`)
       .then(res => res.json())
       .then(data => {
@@ -22,7 +25,42 @@ const GameDetail = () => {
         console.error("Error fetching game detail:", err);
         setLoading(false);
       });
-  }, [id]);
+
+    // Check wishlist status if user is logged in
+    if (user && token) {
+      fetch(`http://localhost:8000/api/wishlist/check/${id}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          setIsWishlisted(data.is_wishlisted);
+        })
+        .catch(err => console.error("Error checking wishlist status:", err));
+    }
+  }, [id, user, token]);
+
+  const toggleWishlist = async () => {
+    if (!user || !token || wishlistLoading) return;
+
+    setWishlistLoading(true);
+    try {
+      const response = await fetch(`http://localhost:8000/api/wishlist/toggle/${id}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      const data = await response.json();
+      setIsWishlisted(data.is_wishlisted);
+    } catch (err) {
+      console.error("Error toggling wishlist:", err);
+    } finally {
+      setWishlistLoading(false);
+    }
+  };
 
   if (loading) return <LoadingSpinner />;
   if (!game) return <div className="error-state">Juego no encontrado. <Link to="/">Volver al catálogo</Link></div>;
@@ -46,7 +84,21 @@ const GameDetail = () => {
 
       <div className="detail-main-info">
         <div className="detail-title-row">
-          <h1 className="detail-game-name">{game.name}</h1>
+          <div className="title-wishlist-group">
+            <h1 className="detail-game-name">{game.name}</h1>
+            {user && (
+              <button
+                className={`wishlist-toggle-btn ${isWishlisted ? 'active' : ''} ${wishlistLoading ? 'loading' : ''}`}
+                onClick={toggleWishlist}
+                disabled={wishlistLoading}
+                title={isWishlisted ? "Quitar de la lista de deseos" : "Añadir a la lista de deseos"}
+              >
+                <svg viewBox="0 0 24 24" fill={isWishlisted ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                </svg>
+              </button>
+            )}
+          </div>
           <div className="detail-genre-cloud">
             {game.genres && game.genres.map(genre => (
               <span key={genre.id} className="detail-genre-tag">{genre.name}</span>
