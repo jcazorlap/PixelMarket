@@ -41,14 +41,29 @@ php artisan app:import-games # Ejecuta el scraper e importa los datos
 # php artisan app:import-games --fresh        # Borra juegos antiguos antes de importar
 # php artisan app:import-games --skip-scraper # Importa el JSON actual sin ejecutar el scraper
 
-# Variables para Google Auth (en .env):
+# Variables para Google Auth y Mailtrap (en .env):
 # GOOGLE_CLIENT_ID=...
 # GOOGLE_CLIENT_SECRET=...
 # GOOGLE_REDIRECT_URI=http://localhost:8000/api/auth/google/callback
+# 
+# MAIL_MAILER=smtp
+# MAIL_HOST=sandbox.smtp.mailtrap.io
+# MAIL_PORT=2525
+# MAIL_USERNAME=tu_usuario_mailtrap
+# MAIL_PASSWORD=tu_password_mailtrap
+# MAIL_ENCRYPTION=tls
+# MAIL_FROM_ADDRESS=soporte@pixelmarket.com
+# 
 # FRONTEND_URL=http://localhost:5173
 
 php artisan serve
 ```
+
+### 📩 Sistema de Soporte
+Se ha implementado un portal de contacto premium que:
+- Pre-rellena datos si el usuario está autenticado.
+- Envía correos electrónicos con diseño "Dark Mode" personalizado.
+- Utiliza Mailtrap para el entorno de pruebas.
 
 **Frontend (Web):**
 ```bash

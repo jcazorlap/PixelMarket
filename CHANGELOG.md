@@ -1,5 +1,15 @@
 # Changelog - PixelMarket
 
+## 2026-03-17
+- **Portal de Contacto Premium**: Implementación de una página de soporte con un formulario moderno y estéticamente superior.
+- **Integración con Mailtrap**: Configuración del sistema de envío de correos electrónicos mediante SMTP, permitiendo recibir consultas de usuarios directamente en el sandbox de Mailtrap.
+- **Diseño de Correo "Dark Mode"**: Rediseño del mailable de Laravel con una estética oscura coherente con la web, usando gradientes cian-púrpura y tipografía de marca.
+- **UX Optimizada**:
+    - **Pre-rellenado Inteligente**: El formulario detecta automáticamente el nombre y email del usuario si tiene la sesión iniciada.
+    - **Checkmark Animado**: Sistema de feedback visual tras el envío exitoso con una tarjeta de éxito centrada y animaciones personalizadas.
+    - **Reseteo de Formulario**: Añadida la lógica para limpiar campos manuales al pulsar "Volver a escribir" para mayor agilidad.
+- **Infraestructura Backend**: Creación del controlador `ContactController`, el mailable `ContactMail` y las rutas API correspondientes.
+
 ## 2026-03-16
 - **Rediseño Estético de Marcadores**: Actualización del icono de "Deseados", reemplazando el corazón por un marcador (bookmark) más alineado con la temática de colección.
 - **Identidad Visual Cyan**: El estado activo de los marcadores y filtros de la lista de deseos ahora utiliza el color cian vibrante (`#1FB6E9`) para una coherencia visual total.

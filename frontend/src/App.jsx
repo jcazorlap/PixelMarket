@@ -5,6 +5,7 @@ import Catalog from './components/Catalog'
 import GameDetail from './components/GameDetail'
 import LoginPage from './pages/LoginPage'
 import ProfilePage from './pages/ProfilePage'
+import ContactPage from './pages/ContactPage'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import './App.css'
 
@@ -27,6 +28,7 @@ function AppContent() {
         <Route path="/game/:id" element={<GameDetail />} />
         <Route path="/login"   element={<LoginPage />} />
         <Route path="/perfil"  element={<ProfilePage />} />
+        <Route path="/contacto" element={<ContactPage />} />
       </Routes>
       <footer style={{ padding: '4rem 2rem', textAlign: 'center', borderTop: '1px solid var(--glass-border)', marginTop: 'auto', color: 'var(--text-muted)' }}>
         <p>© 2026 PixelMarket. Todos los derechos reservados.</p>

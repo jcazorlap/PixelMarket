@@ -8,16 +8,16 @@ export default function ProfilePage() {
   const { user, token, logout, refreshUser } = useAuth();
   const navigate = useNavigate();
 
-  const [name, setName]   = useState('');
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [profileMsg, setProfileMsg] = useState('');
   const [profileErr, setProfileErr] = useState('');
 
-  const [currentPwd, setCurrentPwd]   = useState('');
-  const [newPwd, setNewPwd]           = useState('');
-  const [confirmPwd, setConfirmPwd]   = useState('');
-  const [pwdMsg, setPwdMsg]           = useState('');
-  const [pwdErr, setPwdErr]           = useState('');
+  const [currentPwd, setCurrentPwd] = useState('');
+  const [newPwd, setNewPwd] = useState('');
+  const [confirmPwd, setConfirmPwd] = useState('');
+  const [pwdMsg, setPwdMsg] = useState('');
+  const [pwdErr, setPwdErr] = useState('');
 
   const [saving, setSaving] = useState(false);
 
@@ -32,12 +32,12 @@ export default function ProfilePage() {
     setProfileMsg(''); setProfileErr('');
     setSaving(true);
     try {
-      const res  = await fetch(`${API}/me`, {
-        method:  'PUT',
+      const res = await fetch(`${API}/me`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          Accept:         'application/json',
-          Authorization:  `Bearer ${token}`,
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ name, email }),
       });
@@ -61,16 +61,16 @@ export default function ProfilePage() {
     setPwdMsg(''); setPwdErr('');
     setSaving(true);
     try {
-      const res  = await fetch(`${API}/me/password`, {
-        method:  'PUT',
+      const res = await fetch(`${API}/me/password`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          Accept:         'application/json',
-          Authorization:  `Bearer ${token}`,
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          current_password:      currentPwd,
-          password:              newPwd,
+          current_password: currentPwd,
+          password: newPwd,
           password_confirmation: confirmPwd,
         }),
       });

@@ -28,7 +28,7 @@ const Navbar = () => {
             : <Link to="/login">Perfil</Link>
           }
         </li>
-        <li><a href="#">Soporte</a></li>
+        <li><Link to="/contacto">Soporte</Link></li>
       </ul>
     </nav>
   );

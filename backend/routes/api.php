@@ -6,8 +6,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\GameController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\WishlistController;
+use App\Http\Controllers\ContactController;
 
-// Games
+// Contact Form
+Route::post('/contact', [ContactController::class, 'store']);
 Route::get('/games',  [GameController::class, 'index']);
 Route::get('/genres', [GameController::class, 'genres']);
 
