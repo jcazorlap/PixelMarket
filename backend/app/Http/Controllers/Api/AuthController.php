@@ -94,6 +94,23 @@ class AuthController extends Controller
         // ... (existing logic)
     }
 
+    // PUT /api/me/dino-score (auth:sanctum)
+    public function updateDinoScore(Request $request)
+    {
+        $user = $request->user();
+
+        $data = $request->validate([
+            'score' => 'required|integer|min:0',
+        ]);
+
+        // Only update if it's a new high score
+        if ($data['score'] > $user->dino_high_score) {
+            $user->update(['dino_high_score' => $data['score']]);
+        }
+
+        return response()->json($user);
+    }
+
     // GET /api/auth/google
     public function redirectToGoogle()
     {

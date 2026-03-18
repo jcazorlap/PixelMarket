@@ -27,6 +27,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me',              [AuthController::class, 'me']);
     Route::put('/me',              [AuthController::class, 'update']);
     Route::put('/me/password',     [AuthController::class, 'updatePassword']);
+    Route::put('/me/dino-score',   [AuthController::class, 'updateDinoScore']);
 
     // Wishlist
     Route::get('/wishlist',              [WishlistController::class, 'index']);

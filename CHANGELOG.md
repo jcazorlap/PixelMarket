@@ -6,6 +6,15 @@
 - **Iconografía Social Actualizada**: Actualización de los enlaces a redes sociales con iconos de **X (Twitter)**, **Instagram** y **GitHub**.
 - **UX Simplificada**: Eliminación de navegación secundaria y formularios de newsletter en el footer para priorizar la limpieza visual y el foco en la marca.
 - **Animaciones Sutiles**: Implementación de efectos hover y transiciones fluidas en los enlaces sociales y el logo.
+- **Minijuego Dino Integrado**: Implementación de un minijuego interactivo (estilo Chrome Dino) que aparece automáticamente cuando el catálogo de juegos está vacío.
+- **Persistencia de Récords**:
+    - **Sincronización con Base de Datos**: Los récords ahora se guardan en el perfil del usuario autenticado, permitiendo persistencia entre dispositivos.
+    - **Local Storage**: Soporte para guardado local en el navegador para usuarios invitados.
+- **Recompensa Legendaria**: Los usuarios que alcancen los 9999 puntos desbloquean un icono de **Corona (👑)** exclusivo en la barra de navegación.
+- **Experiencia de Juego Refinada**: Sistema de velocidad progresiva, detección de colisiones optimizada y estética "PixelMarket" con efectos de brillo y transparencia.
+- **Limpieza Masiva de Infraestructura**:
+    - Eliminación de todos los **Factories** (`User`, `Game`, `Store`, `GamePrice`) para un entorno más ligero.
+    - Simplificación extrema del `DatabaseSeeder`, dejando solo las cuentas de prueba fundamentales y eliminando datos de ejemplo obsoletos.
 
 ## 2026-03-17
 - **Portal de Contacto Premium**: Implementación de una página de soporte con un formulario moderno y estéticamente superior.

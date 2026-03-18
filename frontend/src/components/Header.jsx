@@ -24,7 +24,9 @@ const Navbar = () => {
         <li><Link to="/">Catálogo</Link></li>
         <li>
           {user
-            ? <Link to="/perfil" className="nav-username">👤 {user.name}</Link>
+            ? <Link to="/perfil" className="nav-username">
+              {user.dino_high_score >= 9999 ? '👑' : '👤'} {user.name}
+            </Link>
             : <Link to="/login">Perfil</Link>
           }
         </li>

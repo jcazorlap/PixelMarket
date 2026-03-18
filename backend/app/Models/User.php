@@ -24,6 +24,7 @@ class User extends Authenticatable
         'password',
         'google_id',
         'avatar',
+        'dino_high_score',
     ];
 
     /**
@@ -47,6 +48,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'google_id' => 'string',
+            'dino_high_score' => 'integer',
         ];
     }
 
