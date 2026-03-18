@@ -7,6 +7,7 @@ import LoginPage from './pages/LoginPage'
 import ProfilePage from './pages/ProfilePage'
 import ContactPage from './pages/ContactPage'
 import { AuthProvider, useAuth } from './context/AuthContext'
+import Footer from './components/Footer'
 import './App.css'
 
 function AppContent() {
@@ -30,9 +31,7 @@ function AppContent() {
         <Route path="/perfil"  element={<ProfilePage />} />
         <Route path="/contacto" element={<ContactPage />} />
       </Routes>
-      <footer style={{ padding: '4rem 2rem', textAlign: 'center', borderTop: '1px solid var(--glass-border)', marginTop: 'auto', color: 'var(--text-muted)' }}>
-        <p>© 2026 PixelMarket. Todos los derechos reservados.</p>
-      </footer>
+      <Footer />
     </div>
   );
 }

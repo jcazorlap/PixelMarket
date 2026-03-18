@@ -172,6 +172,10 @@ const ContactPage = () => {
           animation: fadeIn 0.8s ease;
         }
 
+        .contact-hero p {
+          max-width: none;
+        }
+
         .contact-card {
           background: var(--glass);
           backdrop-filter: blur(12px);

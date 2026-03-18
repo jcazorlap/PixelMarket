@@ -1,5 +1,12 @@
 # Changelog - PixelMarket
 
+## 2026-03-18
+- **Rediseño Minimalista del Footer**: Implementación de un nuevo componente de cierre de página con un diseño ultra-limpio y centrado.
+- **Identidad de Marca Consistente**: Integración del logo oficial y descripción de PixelMarket con efectos de cristal (glassmorphism) y bordes sutiles.
+- **Iconografía Social Actualizada**: Actualización de los enlaces a redes sociales con iconos de **X (Twitter)**, **Instagram** y **GitHub**.
+- **UX Simplificada**: Eliminación de navegación secundaria y formularios de newsletter en el footer para priorizar la limpieza visual y el foco en la marca.
+- **Animaciones Sutiles**: Implementación de efectos hover y transiciones fluidas en los enlaces sociales y el logo.
+
 ## 2026-03-17
 - **Portal de Contacto Premium**: Implementación de una página de soporte con un formulario moderno y estéticamente superior.
 - **Integración con Mailtrap**: Configuración del sistema de envío de correos electrónicos mediante SMTP, permitiendo recibir consultas de usuarios directamente en el sandbox de Mailtrap.
