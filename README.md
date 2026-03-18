@@ -1,6 +1,6 @@
-# PíxelMarket 🎮
+# PixelMarket 🎮
 
-PíxelMarket es un comparador de precios de videojuegos que agrega ofertas de múltiples tiendas digitales. Utiliza inteligencia artificial para extraer y categorizar datos, ofreciendo una experiencia de búsqueda avanzada con filtros y datos recopilados para recomendar juegos al usuario.
+PixelMarket es un comparador de precios de videojuegos que agrega ofertas de múltiples tiendas digitales. Utiliza inteligencia artificial para extraer y categorizar datos, ofreciendo una experiencia de búsqueda avanzada con filtros y datos recopilados para recomendar juegos al usuario.
 
 ## 🚀 Funcionamiento
 

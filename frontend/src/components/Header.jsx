@@ -8,7 +8,7 @@ const Header = () => {
     <header className="main-header">
       <Link to="/" className="logo-container" style={{ textDecoration: 'none' }}>
         <img src={logoImg} alt="PixelMarket Logo" className="logo-img" />
-        <div className="logo-text">PÍXEL<span className="accent-text">MARKET</span></div>
+        <div className="logo-text">PIXEL<span className="accent-text">MARKET</span></div>
       </Link>
       <Navbar />
     </header>

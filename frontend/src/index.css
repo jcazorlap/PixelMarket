@@ -1567,6 +1567,7 @@ h3,
   width: 20px;
   height: 20px;
 }
+
 /* Wishlist Styles */
 .title-wishlist-group {
   display: flex;
@@ -1680,4 +1681,3 @@ h3,
 .wishlist-filter-btn.active svg {
   fill: currentColor;
 }
-

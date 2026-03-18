@@ -78,7 +78,7 @@ export default function LoginPage() {
       <div className="auth-card">
         {/* Logo / heading */}
         <div className="auth-logo">
-          <span className="gradient-text">PÍXEL</span>MARKET
+          <span className="gradient-text">PIXEL</span>MARKET
         </div>
 
         {/* Tabs */}

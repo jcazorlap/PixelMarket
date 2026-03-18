@@ -124,7 +124,7 @@
     <div class="wrapper">
         <div class="container">
             <div class="header">
-                <h1 class="logo-text">PÍXELMARKET</h1>
+                <h1 class="logo-text">PIXELMARKET</h1>
                 <div class="badge">Soporte Técnico</div>
             </div>
             <div class="content">
@@ -148,7 +148,7 @@
                 </div>
             </div>
             <div class="footer">
-                <p>&copy; 2026 <strong>PíxelMarket</strong>. Todos los derechos reservados.</p>
+                <p>&copy; 2026 <strong>PixelMarket</strong>. Todos los derechos reservados.</p>
                 <p>Enviado desde el portal de soporte.</p>
             </div>
         </div>
