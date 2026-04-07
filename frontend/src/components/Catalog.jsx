@@ -115,8 +115,9 @@ function Catalog() {
     const minPrice = getMinPrice(game);
     const matchesPrice = minPrice >= priceRange[0] && minPrice <= priceRange[1];
     const matchesWishlist = !showWishlistOnly || wishlistIds.has(game.id);
+    const isVisible = game.is_visible !== false;
 
-    return matchesSearch && matchesGenre && matchesPrice && matchesWishlist;
+    return matchesSearch && matchesGenre && matchesPrice && matchesWishlist && isVisible;
   });
 
   // Pagination logic

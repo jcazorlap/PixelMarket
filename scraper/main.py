@@ -3,14 +3,24 @@ import json
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-import google.generativeai as genai
+from google import genai
 from playwright.async_api import async_playwright
 
 load_dotenv()
 
 # Configure Gemini
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-model = genai.GenerativeModel('models/gemini-2.5-flash')
+client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+
+MODEL_ID = "models/gemini-2.5-flash" # Fallback
+config_file = Path("config.json")
+if config_file.exists():
+    try:
+        with open(config_file, "r") as f:
+            config = json.load(f)
+            if "model_id" in config:
+                MODEL_ID = config["model_id"]
+    except Exception as e:
+        print(f"Error reading config.json: {e}")
 
 async def scrape_url(browser, url):
     print(f"Scraping: {url}")
@@ -86,8 +96,10 @@ async def get_game_data_from_gemini(extraction_data):
     """
     
     try:
-        temp_model = genai.GenerativeModel('models/gemini-2.5-flash')
-        response = temp_model.generate_content(prompt)
+        response = client.models.generate_content(
+            model=MODEL_ID,
+            contents=prompt,
+        )
         
         if not response or not response.text:
             print("Error: Gemini returned an empty response.")

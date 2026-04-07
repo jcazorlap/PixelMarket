@@ -1,5 +1,28 @@
 # Changelog - PixelMarket
 
+## 2026-04-07
+- **Configuración Dinámica del Scraper**: Integración de un nuevo modal de configuración en el Panel de Administración ("🕷️ Scraper").
+    - **Selector de IA Actualizado**: Lista exhaustiva de modelos Gemini oficiales (3.1 Pro, 3 Flash, 2.5 Pro, etc.) con tipografía limpia y sin descripciones redundantes.
+    - **Editor de URLs**: Panel de texto para modificar en bloque las páginas objetivo del bot de extracción.
+    - **Sincronización Backend-Python**: Los ajustes se guardan permanentemente en `config.json` y `urls.txt` para que el script de Python lea las preferencias del entorno administrativo antes de arrancar.
+
+## 2026-04-06
+- **Gestión Avanzada de Categorías (CRUD)**: Transformación del panel de administración en una plataforma multi-recurso mediante un alternador inteligente de doble vista (Juegos/Categorías).
+    - **Integración de Etiquetas**: El formulario de juegos ahora cuenta con un selector de múltiples etiquetas (chips) para asociar el catálogo con las categorías.
+    - **Contador en Tiempo Real**: Sincronización continua (`withCount('games')`) que muestra cuántos títulos activos están vinculados a cada género directamente en la tabla.
+    - **Mejoras Estéticas Acumulativas**: Optimización del encabezado del administrador, reubicando las acciones masivas debajo del panel de control principal para una experiencia espaciada y jerárquica.
+
+## 2026-04-05
+- **Panel de Administración Premium**: Implementación de la nueva interfaz altamente segura y refinada en la ruta `/pxm_admin` para gestión interna del catálogo.
+    - **Persistencia de Autenticación Definitiva**: Corrección de bloqueos de pantalla en blanco, garantizando la retención segura de la sesión sin pedir contraseñas excesivas en recargas, pero protegiendo al cambiar de sección.
+    - **Gestión Intuitiva de Títulos**: Soporte completo para añadir, editar, controlar visibilidad y eliminar con ventanas "glassmorphism" premium e imágenes previsualizadas a mayor resolución.
+    - **Acciones y Limpieza**: Botón de "Borrar Todo" masivo.
+
+## 2026-04-04
+- **Migración Crítica del Scraper**: Actualización profunda del motor a la nueva SDK unificada `google-genai`.
+    - **Resolución de Deprecación**: Eliminación permanente de advertencias vinculadas a la librería obsoleta `google-generativeai`.
+    - **Optimización de Procesamiento**: Refactorización del código Python para usar modelos modernos (`Gemini 2.5-flash`) de forma nativa e importaciones eficientes (`php artisan app:import-games`).
+
 ## 2026-03-18
 - **Rediseño Minimalista del Footer**: Implementación de un nuevo componente de cierre de página con un diseño ultra-limpio y centrado.
 - **Identidad de Marca Consistente**: Integración del logo oficial y descripción de PixelMarket con efectos de cristal (glassmorphism) y bordes sutiles.
