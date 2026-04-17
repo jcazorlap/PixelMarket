@@ -14,7 +14,7 @@ class GameController extends Controller
 {
     public function index()
     {
-        // Return all games for the catalog (admin will use this too)
+        // Devolver todos los juegos del catálogo (también usado por el administrador)
         $games = Game::with(['prices.store', 'genres'])->orderBy('id', 'desc')->get();
         return response()->json($games);
     }
@@ -25,7 +25,7 @@ class GameController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'cover_image' => 'nullable|string',
-            'cover_image_file' => 'nullable|image|max:5120', // Max 5MB
+            'cover_image_file' => 'nullable|image|max:5120', // Máximo 5MB
             'is_visible' => 'nullable',
             'prices' => 'nullable|string',
             'genres' => 'nullable|string'
@@ -147,7 +147,7 @@ class GameController extends Controller
         Storage::disk('public')->delete($files);
 
         Game::query()->delete();
-        return response()->json(['message' => 'All games deleted successfully'], 200);
+        return response()->json(['message' => 'Todos los juegos eliminados correctamente'], 200);
     }
 
     public function toggleVisibility(Game $game)

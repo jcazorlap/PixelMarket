@@ -16,7 +16,7 @@ export default function LoginPage() {
   const { login, refreshUser } = useAuth();
   const navigate = useNavigate();
 
-  // Detect token from Google callback
+  // Detectar el token del callback de Google
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const token = params.get('token');
@@ -76,12 +76,12 @@ export default function LoginPage() {
   return (
     <div className="auth-page">
       <div className="auth-card">
-        {/* Logo / heading */}
+        {/* Logo / encabezado */}
         <div className="auth-logo">
           <span className="gradient-text">PIXEL</span>MARKET
         </div>
 
-        {/* Tabs */}
+        {/* Pestañas */}
         <div className="auth-tabs">
           <button
             className={`auth-tab ${tab === 'login' ? 'active' : ''}`}
@@ -97,7 +97,7 @@ export default function LoginPage() {
           </button>
         </div>
 
-        {/* Form */}
+        {/* Formulario */}
         <form className="auth-form" onSubmit={handleSubmit}>
           {tab === 'register' && (
             <div className="form-group">

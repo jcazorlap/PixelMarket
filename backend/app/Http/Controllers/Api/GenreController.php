@@ -35,7 +35,7 @@ class GenreController extends Controller
 
     public function destroy(Genre $genre)
     {
-        // Detach from all games before deleting
+        // Desvincular de todos los juegos antes de eliminar
         $genre->games()->detach();
         $genre->delete();
         return response()->json(null, 204);
@@ -43,11 +43,11 @@ class GenreController extends Controller
 
     public function destroyAll()
     {
-        // Detach all before deleting all
+        // Desvincular todos antes de eliminar
         foreach (Genre::all() as $genre) {
             $genre->games()->detach();
         }
         Genre::query()->delete();
-        return response()->json(['message' => 'All categories deleted'], 200);
+        return response()->json(['message' => 'Todas las categorías eliminadas'], 200);
     }
 }

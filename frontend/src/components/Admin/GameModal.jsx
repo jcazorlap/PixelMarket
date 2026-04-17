@@ -7,7 +7,7 @@ function GameModal({ isOpen, onClose, onSave, game, allGenres = [] }) {
   const [isVisible, setIsVisible] = useState(true);
   
   // Image states
-  const [imageMode, setImageMode] = useState('url'); // 'url' or 'file'
+  const [imageMode, setImageMode] = useState('url'); // 'url' o 'file'
   const [coverImageUrl, setCoverImageUrl] = useState('');
   const [coverImageFile, setCoverImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState('');
@@ -29,10 +29,10 @@ function GameModal({ isOpen, onClose, onSave, game, allGenres = [] }) {
       setImageMode('url');
       setImagePreview(game.cover_image || '');
       
-      // Load categories
+      // Cargar categorías
       setSelectedGenreIds(game.genres ? game.genres.map(g => g.id) : []);
       
-      // Load prices
+      // Cargar precios
       if (game.prices && Array.isArray(game.prices)) {
         setPrices(game.prices.map(p => ({
           store_name: p.store ? p.store.name : '',
@@ -109,10 +109,10 @@ function GameModal({ isOpen, onClose, onSave, game, allGenres = [] }) {
       formData.append('cover_image', coverImageUrl);
     }
     
-    // Add prices as JSON string
+    // Añadir precios como cadena JSON
     formData.append('prices', JSON.stringify(prices));
     
-    // Add genres as JSON string
+    // Añadir géneros como cadena JSON
     formData.append('genres', JSON.stringify(selectedGenreIds));
     
     onSave(formData);
@@ -128,7 +128,7 @@ function GameModal({ isOpen, onClose, onSave, game, allGenres = [] }) {
         
         <form onSubmit={handleSubmit} className="modal-form">
           <div className="form-sections">
-            {/* Left Section: Info & Media */}
+            {/* Sección izquierda: Información y media */}
             <div className="form-section main-info">
               <div className="input-group">
                 <label>Nombre del Juego</label>
@@ -151,7 +151,7 @@ function GameModal({ isOpen, onClose, onSave, game, allGenres = [] }) {
                 />
               </div>
 
-              {/* Categorías Section */}
+              {/* Sección de Categorías */}
               <div className="category-selection">
                 <label>Categorías</label>
                 <div className="genres-grid">
@@ -229,7 +229,7 @@ function GameModal({ isOpen, onClose, onSave, game, allGenres = [] }) {
               </div>
             </div>
 
-            {/* Right Section: Platform Prices */}
+            {/* Sección derecha: Precios por plataforma */}
             <div className="form-section platform-prices">
               <div className="section-header">
                 <label>Enlaces de Compra y Precios</label>

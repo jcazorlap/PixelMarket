@@ -18,7 +18,7 @@ function AppContent() {
   const isAdminPage = location.pathname === '/pxm_admin';
 
   useEffect(() => {
-    // Clear admin auth session immediately whenever we navigate away from the admin route
+    // Borrar la sesión del admin inmediatamente al navegar fuera de la ruta de administración
     if (location.pathname !== '/pxm_admin') {
       sessionStorage.removeItem('pxm_admin_auth');
     }

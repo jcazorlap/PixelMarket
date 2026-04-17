@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class WishlistController extends Controller
 {
     /**
-     * Get the authenticated user's wishlist games.
+     * Obtener los juegos de la lista de deseos del usuario autenticado.
      */
     public function index(Request $request)
     {
@@ -20,7 +20,7 @@ class WishlistController extends Controller
     }
 
     /**
-     * Toggle a game in the user's wishlist.
+     * Añadir o quitar un juego de la lista de deseos del usuario.
      */
     public function toggle(Request $request, Game $game)
     {
@@ -36,7 +36,7 @@ class WishlistController extends Controller
     }
     
     /**
-     * Check if a game is in the user's wishlist.
+     * Comprobar si un juego está en la lista de deseos del usuario.
      */
     public function check(Request $request, Game $game)
     {

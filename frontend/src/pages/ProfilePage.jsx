@@ -104,7 +104,7 @@ export default function ProfilePage() {
         </div>
         <h1 className="profile-title">Hola, <span className="gradient-text">{user.name}</span></h1>
 
-        {/* Profile data */}
+        {/* Datos del perfil */}
         <div className="profile-card">
           <h2 className="profile-section-title">Datos de perfil</h2>
           <form onSubmit={handleProfileSave} className="auth-form">
@@ -134,7 +134,7 @@ export default function ProfilePage() {
           </form>
         </div>
 
-        {/* Change password */}
+        {/* Cambiar contraseña */}
         <div className="profile-card">
           <h2 className="profile-section-title">Cambiar contraseña</h2>
           <form onSubmit={handlePasswordSave} className="auth-form">
@@ -176,7 +176,7 @@ export default function ProfilePage() {
           </form>
         </div>
 
-        {/* Logout */}
+        {/* Cerrar sesión */}
         <button className="logout-btn" onClick={handleLogout}>
           ⎋ Cerrar sesión
         </button>

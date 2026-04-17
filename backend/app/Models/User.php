@@ -53,7 +53,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the games in the user's wishlist.
+     * Obtener los juegos en la lista de deseos del usuario.
      */
     public function wishlist()
     {

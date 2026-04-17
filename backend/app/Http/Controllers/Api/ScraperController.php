@@ -20,7 +20,7 @@ class ScraperController extends Controller
         $configPath = $this->scraperDir . '/config.json';
         $urlsPath = $this->scraperDir . '/urls.txt';
 
-        $config = ['model_id' => 'models/gemini-2.5-flash']; // default
+        $config = ['model_id' => 'models/gemini-2.5-flash']; // valor por defecto
         if (File::exists($configPath)) {
             $configData = json_decode(File::get($configPath), true);
             if (isset($configData['model_id'])) {
@@ -49,13 +49,13 @@ class ScraperController extends Controller
         $configPath = $this->scraperDir . '/config.json';
         $urlsPath = $this->scraperDir . '/urls.txt';
 
-        // Save config.json
+        // Guardar config.json
         $config = ['model_id' => $request->model_id];
         File::put($configPath, json_encode($config, JSON_PRETTY_PRINT));
 
-        // Save urls.txt
+        // Guardar urls.txt
         File::put($urlsPath, $request->urls ?? '');
 
-        return response()->json(['message' => 'Scraper configuration updated successfully']);
+        return response()->json(['message' => 'Configuración del scraper actualizada correctamente']);
     }
 }

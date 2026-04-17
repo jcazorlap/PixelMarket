@@ -9,14 +9,14 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(() => localStorage.getItem('pm_token'));
   const [loading, setLoading] = useState(true);
 
-  // On mount, validate stored token
+  // Al montar, validar el token almacenado
   useEffect(() => {
     if (token) {
       fetch(`${API}/me`, {
         headers: { Authorization: `Bearer ${token}` },
       })
         .then(res => {
-          if (!res.ok) throw new Error('Invalid token');
+          if (!res.ok) throw new Error('Token inválido');
           return res.json();
         })
         .then(data => setUser(data))
@@ -39,7 +39,7 @@ export function AuthProvider({ children }) {
       setUser(userData);
       setLoading(false);
     } else {
-      // Fetch user data if not provided (e.g., Google login)
+      // Obtener datos del usuario si no se han proporcionado (p. ej., login con Google)
       try {
         const res = await fetch(`${API}/me`, {
           headers: { Authorization: `Bearer ${newToken}` },
@@ -49,7 +49,7 @@ export function AuthProvider({ children }) {
           setUser(data);
         }
       } catch (err) {
-        console.error("Failed to fetch user after login", err);
+        console.error("Error al obtener el usuario después del inicio de sesión", err);
       } finally {
         setLoading(false);
       }

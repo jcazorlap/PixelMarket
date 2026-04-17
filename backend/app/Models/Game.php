@@ -22,7 +22,7 @@ class Game extends Model
     }
 
     /**
-     * Get the users who have wishlisted this game.
+     * Obtener los usuarios que tienen este juego en su lista de deseos.
      */
     public function wishlistedBy()
     {

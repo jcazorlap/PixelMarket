@@ -11,7 +11,7 @@ use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
-    // POST /api/register
+    // POST /api/register — Registro de nuevo usuario
     public function register(Request $request)
     {
         $data = $request->validate([
@@ -34,7 +34,7 @@ class AuthController extends Controller
         ], 201);
     }
 
-    // POST /api/login
+    // POST /api/login — Inicio de sesión
     public function login(Request $request)
     {
         $data = $request->validate([
@@ -50,7 +50,7 @@ class AuthController extends Controller
             ]);
         }
 
-        // Revoke old tokens and issue a fresh one
+        // Revocar tokens anteriores y emitir uno nuevo
         $user->tokens()->delete();
         $token = $user->createToken('auth_token')->plainTextToken;
 
@@ -60,20 +60,20 @@ class AuthController extends Controller
         ]);
     }
 
-    // POST /api/logout  (auth:sanctum)
+    // POST /api/logout — Cierre de sesión (auth:sanctum)
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
         return response()->json(['message' => 'Sesión cerrada correctamente.']);
     }
 
-    // GET /api/me  (auth:sanctum)
+    // GET /api/me — Datos del usuario autenticado (auth:sanctum)
     public function me(Request $request)
     {
         return response()->json($request->user());
     }
 
-    // PUT /api/me  (auth:sanctum)
+    // PUT /api/me — Actualizar datos del usuario (auth:sanctum)
     public function update(Request $request)
     {
         $user = $request->user();
@@ -88,13 +88,13 @@ class AuthController extends Controller
         return response()->json($user);
     }
 
-    // PUT /api/me/password  (auth:sanctum)
+    // PUT /api/me/password — Cambiar contraseña (auth:sanctum)
     public function updatePassword(Request $request)
     {
-        // ... (existing logic)
+        // ... (lógica pendiente de implementar)
     }
 
-    // PUT /api/me/dino-score (auth:sanctum)
+    // PUT /api/me/dino-score — Actualizar puntuación del Dino (auth:sanctum)
     public function updateDinoScore(Request $request)
     {
         $user = $request->user();
@@ -103,7 +103,7 @@ class AuthController extends Controller
             'score' => 'required|integer|min:0',
         ]);
 
-        // Only update if it's a new high score
+        // Solo actualizar si es una nueva puntuación máxima
         if ($data['score'] > $user->dino_high_score) {
             $user->update(['dino_high_score' => $data['score']]);
         }
@@ -111,13 +111,13 @@ class AuthController extends Controller
         return response()->json($user);
     }
 
-    // GET /api/auth/google
+    // GET /api/auth/google — Redirigir a Google OAuth
     public function redirectToGoogle()
     {
         return Socialite::driver('google')->stateless()->redirect();
     }
 
-    // GET /api/auth/google/callback
+    // GET /api/auth/google/callback — Manejar respuesta de Google OAuth
     public function handleGoogleCallback()
     {
         try {
@@ -129,12 +129,12 @@ class AuthController extends Controller
                 'name' => $googleUser->getName(),
                 'google_id' => $googleUser->getId(),
                 'avatar' => $googleUser->getAvatar(),
-                // No password needed for Google users
+                // Los usuarios de Google no necesitan contraseña
             ]);
 
             $token = $user->createToken('auth_token')->plainTextToken;
 
-            // Redirect back to frontend with token
+            // Redirigir al frontend con el token de autenticación
             $frontendUrl = env('FRONTEND_URL', 'http://localhost:5173');
             return redirect($frontendUrl . '/login?token=' . $token . '&google=true');
 

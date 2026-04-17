@@ -14,7 +14,7 @@ function AdminPage() {
   const [allGenres, setAllGenres] = useState([]);
   
   // View state
-  const [view, setView] = useState('games'); // 'games' or 'categories'
+  const [view, setView] = useState('games'); // 'games' o 'categories'
   
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,7 +26,7 @@ function AdminPage() {
   const ADMIN_PASSWORD = 'adminPixelMarket123';
 
   useEffect(() => {
-    // Check if authorized in session storage to support page reloads
+    // Comprobar si está autorizado en el almacenamiento de sesión para soportar recargas de página
     if (sessionStorage.getItem('pxm_admin_auth') === 'true') {
       setIsAuthorized(true);
       fetchGames();
@@ -76,7 +76,7 @@ function AdminPage() {
     try {
       await fetch(`http://localhost:8000/api/games/${id}`, { method: 'DELETE' });
       setGames(games.filter(g => g.id !== id));
-      fetchGenres(); // Refresh counts
+      fetchGenres(); // Actualizar contadores
     } catch (err) {
       alert('Error al borrar el juego');
     }
@@ -88,7 +88,7 @@ function AdminPage() {
     try {
       await fetch('http://localhost:8000/api/games/all', { method: 'DELETE' });
       setGames([]);
-      fetchGenres(); // Refresh counts
+      fetchGenres(); // Actualizar contadores
     } catch (err) {
       alert('Error al borrar todos los juegos');
     }
@@ -111,7 +111,7 @@ function AdminPage() {
       ? `http://localhost:8000/api/games/${selectedGame.id}` 
       : 'http://localhost:8000/api/games';
     
-    // Laravel handles multipart/form-data better with POST + _method=PUT
+    // Laravel maneja mejor el multipart/form-data con POST + _method=PUT
     const method = 'POST';
     if (selectedGame) {
       targetFormData.append('_method', 'PUT');
@@ -123,7 +123,7 @@ function AdminPage() {
         body: targetFormData
       });
       
-      if (!response.ok) throw new Error('Error saving game');
+      if (!response.ok) throw new Error('Error al guardar el juego');
       
       const savedGame = await response.json();
       
@@ -132,7 +132,7 @@ function AdminPage() {
       } else {
         setGames([savedGame, ...games]);
       }
-      fetchGenres(); // Refresh counts
+      fetchGenres(); // Actualizar contadores
       setIsModalOpen(false);
       setSelectedGame(null);
     } catch (err) {
@@ -153,7 +153,7 @@ function AdminPage() {
         body: JSON.stringify(genreData)
       });
       
-      if (!response.ok) throw new Error('Error saving category');
+      if (!response.ok) throw new Error('Error al guardar la categoría');
       
       const savedGenre = await response.json();
       

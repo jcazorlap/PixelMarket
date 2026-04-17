@@ -8,10 +8,10 @@ from playwright.async_api import async_playwright
 
 load_dotenv()
 
-# Configure Gemini
+# Configurar cliente de Gemini
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
-MODEL_ID = "models/gemini-2.5-flash" # Fallback
+MODEL_ID = "models/gemini-2.5-flash" # Valor por defecto
 config_file = Path("config.json")
 if config_file.exists():
     try:
@@ -27,13 +27,13 @@ async def scrape_url(browser, url):
     page = await browser.new_page()
     try:
         await page.goto(url, wait_until="domcontentloaded", timeout=60000)
-        # Scroll more to trigger lazy loading
+        # Desplazar más para activar la carga perezosa
         await page.mouse.wheel(0, 5000)
         await asyncio.sleep(3)
         await page.mouse.wheel(0, -2000)
         await asyncio.sleep(1)
         
-        # Extract visible text and images
+        # Extraer texto visible e imágenes
         extraction_data = await page.evaluate("""() => {
             const images = Array.from(document.querySelectorAll('img')).map(img => ({
                 src: img.src,
@@ -41,7 +41,7 @@ async def scrape_url(browser, url):
                 score: (img.alt.toLowerCase().includes('cover') || img.src.toLowerCase().includes('cover') || img.alt.toLowerCase().includes('header') || img.src.toLowerCase().includes('header')) ? 10 : 0
             })).filter(img => img.src && img.src.startsWith('http') && !img.src.includes('icon') && !img.src.includes('avatar'));
             
-            // Sort by score and take top 30
+            // Ordenar por puntuación y tomar los 30 primeros
             const sortedImages = images.sort((a, b) => b.score - a.score).slice(0, 30);
             
             return {
@@ -69,7 +69,7 @@ async def get_game_data_from_gemini(extraction_data):
 
     print(f"Sending {len(text)} characters and {len(images)} image URLs to Gemini...")
     
-    # Format images for the prompt - make it more concise
+    # Formatear las imágenes para el prompt de forma más concisa
     images_str = "\n".join([f"- URL: {img['src']} (Alt: {img['alt']})" for img in images])
 
     prompt = f"""
@@ -108,7 +108,7 @@ async def get_game_data_from_gemini(extraction_data):
         content = response.text.strip()
         print(f"Gemini response (first 100 chars): {content[:100]}...")
 
-        # Clean response text
+        # Limpiar el texto de la respuesta
         if "```json" in content:
             content = content.split("```json")[1].split("```")[0].strip()
         elif "```" in content:
@@ -151,11 +151,11 @@ async def main():
                         if not isinstance(game, dict):
                             continue
                             
-                        # If Gemini didn't find a specific URL, or if we want to ensure we have one
+                        # Si Gemini no encontró una URL específica, usar la URL de origen como respaldo
                         if not game.get('url_link'):
-                            game['url_link'] = url # Use the source URL as fallback
+                            game['url_link'] = url # Usar la URL de origen como respaldo
                         
-                        # Ensure a fallback based on store name if everything else fails
+                        # Asegurar respaldo basado en el nombre de la tienda si todo lo demás falla
                         store_name = game.get('store', '')
                         if not game.get('url_link') and store_name in DEFAULT_STORE_URLS:
                             game['url_link'] = DEFAULT_STORE_URLS[store_name]

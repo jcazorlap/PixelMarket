@@ -3,16 +3,16 @@ import './DinoGame.css';
 import { useAuth } from '../context/AuthContext';
 
 const DinoGame = () => {
-  const { user, token, register } = useAuth(); // Assume register is actually the update function if needed, but let's check AuthContext
+  const { user, token, register } = useAuth(); // Asumimos que register es en realidad la función de actualización si es necesario, verificar AuthContext
   const canvasRef = useRef(null);
   const [gameOver, setGameOver] = useState(false);
   const [score, setScore] = useState(0);
   
-  // Use a local ref for highScore to avoid stale state in the game loop
+  // Usar una ref local para highScore y evitar estado obsoleto en el bucle del juego
   const localHighScore = useRef(parseInt(localStorage.getItem('pixelDinoHighScore')) || 0);
   const [displayHighScore, setDisplayHighScore] = useState(localHighScore.current);
 
-  // Sync with user data if logged in
+  // Sincronizar con los datos del usuario si ha iniciado sesión
   useEffect(() => {
     if (user && user.dino_high_score > localHighScore.current) {
       localHighScore.current = user.dino_high_score;
@@ -22,7 +22,7 @@ const DinoGame = () => {
   }, [user]);
 
   const gameState = useRef({
-    // ... (rest of the initial state remains the same)
+    // ... (el resto del estado inicial permanece igual)
     player: {
       x: 50,
       y: 200,
@@ -102,28 +102,28 @@ const DinoGame = () => {
       if (state.isRunning) {
         const player = state.player;
 
-        // Player Physics
+        // Física del jugador
         player.dy += player.gravity;
         player.y += player.dy;
 
-        // Ground collision
+        // Colisión con el suelo
         if (player.y + player.height > 230) {
           player.y = 230 - player.height;
           player.dy = 0;
           player.grounded = true;
         }
 
-        // Obstacle spawning
+        // Generación de obstáculos
         state.frame++;
         if (state.frame % Math.max(70, 150 - Math.floor(state.speed * 5)) === 0) {
           spawnObstacle();
         }
 
-        // Move obstacles
+        // Mover obstáculos
         state.obstacles.forEach((obs, index) => {
           obs.x -= state.speed;
 
-          // Collision detection
+          // Detección de colisiones
           if (
             player.x < obs.x + obs.width &&
             player.x + player.width > obs.x &&
@@ -134,7 +134,7 @@ const DinoGame = () => {
             setGameOver(true);
           }
 
-          // Remove off-screen obstacles
+          // Eliminar obstáculos fuera de la pantalla
           if (obs.x + obs.width < 0) {
             state.obstacles.splice(index, 1);
             setScore(s => {
@@ -144,7 +144,7 @@ const DinoGame = () => {
                 setDisplayHighScore(newScore);
                 localStorage.setItem('pixelDinoHighScore', newScore.toString());
                 
-                // Sync with backend if logged in
+                // Sincronizar con el servidor si el usuario ha iniciado sesión
                 if (user && token) {
                   fetch('http://localhost:8000/api/me/dino-score', {
                     method: 'PUT',
@@ -158,7 +158,7 @@ const DinoGame = () => {
               }
               return newScore;
             });
-            // Gradually increase speed
+            // Aumentar la velocidad gradualmente
             state.speed += 0.1;
           }
         });
@@ -172,10 +172,10 @@ const DinoGame = () => {
       const state = gameState.current;
       const player = state.player;
 
-      // Clear canvas
+      // Limpiar el canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Draw Ground
+      // Dibujar el suelo
       ctx.beginPath();
       ctx.moveTo(0, 230);
       ctx.lineTo(800, 230);
@@ -183,22 +183,22 @@ const DinoGame = () => {
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      // Draw Player (Cube with glow)
+      // Dibujar al jugador (cubo con brillo)
       ctx.shadowBlur = 15;
       ctx.shadowColor = player.color;
       ctx.fillStyle = player.color;
       ctx.fillRect(player.x, player.y, player.width, player.height);
 
-      // Reset shadow
+      // Reiniciar sombra
       ctx.shadowBlur = 0;
 
-      // Draw Obstacles (Spikes with glow)
+      // Dibujar obstáculos (picos con brillo)
       state.obstacles.forEach(obs => {
         ctx.shadowBlur = 10;
         ctx.shadowColor = obs.color;
         ctx.fillStyle = obs.color;
 
-        // Draw as a triangle (spike)
+        // Dibujar como triángulo (pico)
         ctx.beginPath();
         ctx.moveTo(obs.x, obs.y + obs.height);
         ctx.lineTo(obs.x + obs.width / 2, obs.y);

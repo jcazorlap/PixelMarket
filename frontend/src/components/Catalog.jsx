@@ -18,7 +18,7 @@ function Catalog() {
   const itemsPerPage = 10;
 
   useEffect(() => {
-    // Fetch games and genres in parallel
+    // Obtener juegos y géneros en paralelo
     Promise.all([
       fetch('http://localhost:8000/api/games').then(res => res.json()),
       fetch('http://localhost:8000/api/genres').then(res => res.json())
@@ -28,7 +28,7 @@ function Catalog() {
         setGenres(genresData);
         setLoading(false);
 
-        // Update globalMaxPrice based on actual data
+        // Actualizar el precio máximo global con los datos reales
         const maxPrice = gamesData.reduce((max, game) => {
           const gameMin = getMinPrice(game);
           return (gameMin > max) ? gameMin : max;
@@ -41,7 +41,7 @@ function Catalog() {
         setLoading(false);
       });
 
-    // Fetch wishlist IDs if logged in
+    // Obtener los IDs de la lista de deseos si el usuario ha iniciado sesión
     if (user && token) {
       fetch('http://localhost:8000/api/wishlist', {
         headers: { Authorization: `Bearer ${token}` }
@@ -54,13 +54,13 @@ function Catalog() {
     }
   }, [user, token]);
 
-  // Helper: get minimum price for a game across all stores
+  // Auxiliar: obtener el precio mínimo de un juego entre todas las tiendas
   const getMinPrice = (game) => {
     if (!game.prices || game.prices.length === 0) return 0;
     return Math.min(...game.prices.map(p => parseFloat(p.price)));
   };
 
-  // Static definition of categories for grouping
+  // Definición estática de categorías para agrupación
   const genreCategories = {
     "Acción & Disparos": [
       "Acción", "Disparos", "Disparos en primera persona", "Disparos en tercera persona",
@@ -85,7 +85,7 @@ function Catalog() {
     ]
   };
 
-  // Group fetched genres into the defined categories
+  // Agrupar los géneros obtenidos en las categorías definidas
   const groupedGenres = {};
   const processedGenreNames = new Set();
 
@@ -101,7 +101,7 @@ function Catalog() {
     }
   });
 
-  // Add remaining genres to "Otros"
+  // Añadir los géneros restantes a "Otros"
   const remainingGenres = genres.filter(g => !processedGenreNames.has(g.name));
   if (remainingGenres.length > 0) {
     if (!groupedGenres["Más Categorías"]) groupedGenres["Más Categorías"] = [];
@@ -120,7 +120,7 @@ function Catalog() {
     return matchesSearch && matchesGenre && matchesPrice && matchesWishlist && isVisible;
   });
 
-  // Pagination logic
+  // Lógica de paginación
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredGames.slice(indexOfFirstItem, indexOfLastItem);
@@ -137,10 +137,10 @@ function Catalog() {
 
       <div className="catalog-layout">
 
-        {/* ── LEFT: Sidebar Column ── */}
+        {/* ── IZQUIERDA: Columna lateral ── */}
         <div className="sidebar-column">
 
-          {/* ── Price Filter Card ── */}
+          {/* ── Tarjeta de filtro de precio ── */}
           <aside className="price-sidebar">
             <div className="sidebar-header-row">
               <h2 className="section-subtitle">PRECIO</h2>
@@ -201,7 +201,7 @@ function Catalog() {
               )}
             </div>
 
-            {/* Always-visible: "Todos" option */}
+            {/* Siempre visible: opción "Todos" */}
             <ul className="genre-link-list sidebar-top-list">
               <li
                 className={selectedCategory === 'Todos' ? 'active' : ''}
@@ -211,7 +211,7 @@ function Catalog() {
               </li>
             </ul>
 
-            {/* Expandable full grid */}
+            {/* Grid expandible completo */}
             <div className={`sidebar-genre-grid ${isMenuExpanded || genres.length < 8 ? 'expanded' : ''}`}>
               {Object.entries(groupedGenres).map(([category, activeGenres]) => (
                 <div key={category} className="genre-column">
@@ -233,7 +233,7 @@ function Catalog() {
           </aside>
         </div>{/* end .sidebar-column */}
 
-        {/* ── RIGHT: Games + Search ── */}
+        {/* ── DERECHA: Juegos + Búsqueda ── */}
         <div className="catalog-main">
           <div className="catalog-header">
             <div className="active-filter-indicator">

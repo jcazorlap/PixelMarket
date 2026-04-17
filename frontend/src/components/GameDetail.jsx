@@ -13,7 +13,7 @@ const GameDetail = () => {
   const [wishlistLoading, setWishlistLoading] = useState(false);
 
   useEffect(() => {
-    // Fetch game details
+    // Obtener detalles del juego
     fetch(`http://localhost:8000/api/games`)
       .then(res => res.json())
       .then(data => {
@@ -26,7 +26,7 @@ const GameDetail = () => {
         setLoading(false);
       });
 
-    // Check wishlist status if user is logged in
+    // Comprobar el estado de la lista de deseos si el usuario ha iniciado sesión
     if (user && token) {
       fetch(`http://localhost:8000/api/wishlist/check/${id}`, {
         headers: {

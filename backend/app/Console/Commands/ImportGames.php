@@ -23,11 +23,11 @@ class ImportGames extends Command
         if (!$this->option('skip-scraper')) {
             $this->info('Starting scraper...');
 
-            // Execute Python scraper
+            // Ejecutar el scraper de Python
             $pythonBinary = 'python';
             
             $process = new \Symfony\Component\Process\Process([$pythonBinary, 'main.py'], $scraperDir);
-            $process->setTimeout(300); // 5 minutes timeout
+            $process->setTimeout(300); // Tiempo máximo: 5 minutos
             
             $process->run(function ($type, $buffer) {
                 $this->output->write($buffer);
@@ -50,11 +50,11 @@ class ImportGames extends Command
         }
 
         if ($this->option('fresh')) {
-            $this->warn('Truncating existing games and prices...');
+            $this->warn('Vaciando juegos y precios existentes...');
             \Illuminate\Support\Facades\Schema::disableForeignKeyConstraints();
             \App\Models\GamePrice::truncate();
             \App\Models\Game::truncate();
-            // Optional: Also truncate genres if they should be refreshed too
+            // Opcional: También vaciar géneros si se deben actualizar
             // \App\Models\Genre::truncate();
             \Illuminate\Support\Facades\Schema::enableForeignKeyConstraints();
         }
@@ -75,9 +75,9 @@ class ImportGames extends Command
                 ]
             );
 
-            // Handle genres
+            // Gestionar géneros
             if (!empty($item['category'])) {
-                // Some categories might be comma-separated strings
+                // Algunas categorías pueden ser cadenas separadas por comas
                 $categories = array_map('trim', explode(',', $item['category']));
                 $genreIds = [];
                 foreach ($categories as $catName) {
