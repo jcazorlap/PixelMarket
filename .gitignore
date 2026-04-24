@@ -29,3 +29,6 @@ Thumbs.db
 
 # Output
 /scraper/games_data.json
+
+# Deployment
+DESPLIEGUE.md
