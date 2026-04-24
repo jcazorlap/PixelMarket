@@ -49,7 +49,7 @@ function AdminPage() {
   const fetchGames = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:8000/api/games');
+      const response = await fetch('/api/games');
       const data = await response.json();
       setGames(data);
     } catch (err) {
@@ -62,7 +62,7 @@ function AdminPage() {
 
   const fetchGenres = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/genres');
+      const response = await fetch('/api/genres');
       const data = await response.json();
       setAllGenres(data);
     } catch (err) {
@@ -74,7 +74,7 @@ function AdminPage() {
     if (!window.confirm('¿Estás seguro de que quieres borrar este juego?')) return;
     
     try {
-      await fetch(`http://localhost:8000/api/games/${id}`, { method: 'DELETE' });
+      await fetch(`/api/games/${id}`, { method: 'DELETE' });
       setGames(games.filter(g => g.id !== id));
       fetchGenres(); // Actualizar contadores
     } catch (err) {
@@ -86,7 +86,7 @@ function AdminPage() {
     if (!window.confirm('¡ATENCIÓN! ¿Estás seguro de que quieres borrar TODOS los juegos de la base de datos? Esta acción no se puede deshacer.')) return;
     
     try {
-      await fetch('http://localhost:8000/api/games/all', { method: 'DELETE' });
+      await fetch('/api/games/all', { method: 'DELETE' });
       setGames([]);
       fetchGenres(); // Actualizar contadores
     } catch (err) {
@@ -96,7 +96,7 @@ function AdminPage() {
 
   const handleToggleVisibility = async (game) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/games/${game.id}/toggle-visibility`, {
+      const response = await fetch(`/api/games/${game.id}/toggle-visibility`, {
         method: 'PATCH',
       });
       const updatedGame = await response.json();
@@ -108,8 +108,8 @@ function AdminPage() {
 
   const handleSaveGame = async (targetFormData) => {
     const url = selectedGame 
-      ? `http://localhost:8000/api/games/${selectedGame.id}` 
-      : 'http://localhost:8000/api/games';
+      ? `/api/games/${selectedGame.id}` 
+      : '/api/games';
     
     // Laravel maneja mejor el multipart/form-data con POST + _method=PUT
     const method = 'POST';
@@ -142,8 +142,8 @@ function AdminPage() {
 
   const handleSaveGenre = async (genreData) => {
     const url = selectedGenre 
-      ? `http://localhost:8000/api/genres/${selectedGenre.id}` 
-      : 'http://localhost:8000/api/genres';
+      ? `/api/genres/${selectedGenre.id}` 
+      : '/api/genres';
     const method = selectedGenre ? 'PUT' : 'POST';
 
     try {
@@ -173,7 +173,7 @@ function AdminPage() {
     if (!window.confirm('¿Estás seguro de que quieres borrar esta categoría?')) return;
     
     try {
-      await fetch(`http://localhost:8000/api/genres/${id}`, { method: 'DELETE' });
+      await fetch(`/api/genres/${id}`, { method: 'DELETE' });
       setAllGenres(allGenres.filter(g => g.id !== id));
     } catch (err) {
       alert('Error al borrar la categoría');
@@ -184,7 +184,7 @@ function AdminPage() {
     if (!window.confirm('¡ATENCIÓN! ¿Estás seguro de que quieres borrar TODAS las categorías? Esto desvinculará todos los juegos.')) return;
     
     try {
-      await fetch('http://localhost:8000/api/genres/all', { method: 'DELETE' });
+      await fetch('/api/genres/all', { method: 'DELETE' });
       setAllGenres([]);
     } catch (err) {
       alert('Error al borrar todas las categorías');

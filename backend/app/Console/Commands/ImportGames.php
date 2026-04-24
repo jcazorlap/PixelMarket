@@ -24,7 +24,7 @@ class ImportGames extends Command
             $this->info('Starting scraper...');
 
             // Ejecutar el scraper de Python
-            $pythonBinary = 'python';
+            $pythonBinary = env('PYTHON_BINARY', 'python');
             
             $process = new \Symfony\Component\Process\Process([$pythonBinary, 'main.py'], $scraperDir);
             $process->setTimeout(300); // Tiempo máximo: 5 minutos

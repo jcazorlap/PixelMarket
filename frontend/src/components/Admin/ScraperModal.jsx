@@ -32,7 +32,7 @@ const ScraperModal = ({ isOpen, onClose }) => {
     setIsLoading(true);
     setStatusMsg('');
     try {
-      const response = await fetch('http://localhost:8000/api/scraper/config');
+      const response = await fetch('/api/scraper/config');
       if (response.ok) {
         const data = await response.json();
         setModelId(data.model_id || 'models/gemini-2.5-flash');
@@ -54,7 +54,7 @@ const ScraperModal = ({ isOpen, onClose }) => {
     setStatusMsg('');
 
     try {
-      const response = await fetch('http://localhost:8000/api/scraper/config', {
+      const response = await fetch('/api/scraper/config', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

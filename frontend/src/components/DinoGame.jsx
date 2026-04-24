@@ -146,7 +146,7 @@ const DinoGame = () => {
                 
                 // Sincronizar con el servidor si el usuario ha iniciado sesión
                 if (user && token) {
-                  fetch('http://localhost:8000/api/me/dino-score', {
+                  fetch('/api/me/dino-score', {
                     method: 'PUT',
                     headers: {
                       'Content-Type': 'application/json',

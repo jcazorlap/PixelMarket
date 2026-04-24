@@ -14,7 +14,7 @@ const GameDetail = () => {
 
   useEffect(() => {
     // Obtener detalles del juego
-    fetch(`http://localhost:8000/api/games`)
+    fetch(`/api/games`)
       .then(res => res.json())
       .then(data => {
         const found = data.find(g => g.id === parseInt(id));
@@ -28,7 +28,7 @@ const GameDetail = () => {
 
     // Comprobar el estado de la lista de deseos si el usuario ha iniciado sesión
     if (user && token) {
-      fetch(`http://localhost:8000/api/wishlist/check/${id}`, {
+      fetch(`/api/wishlist/check/${id}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -46,7 +46,7 @@ const GameDetail = () => {
 
     setWishlistLoading(true);
     try {
-      const response = await fetch(`http://localhost:8000/api/wishlist/toggle/${id}`, {
+      const response = await fetch(`/api/wishlist/toggle/${id}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

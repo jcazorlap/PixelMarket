@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-const API = 'http://localhost:8000/api';
+const API = '/api';
 
 export default function LoginPage() {
   const [tab, setTab] = useState('login'); // 'login' | 'register'

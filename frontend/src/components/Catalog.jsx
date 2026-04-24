@@ -20,8 +20,8 @@ function Catalog() {
   useEffect(() => {
     // Obtener juegos y géneros en paralelo
     Promise.all([
-      fetch('http://localhost:8000/api/games').then(res => res.json()),
-      fetch('http://localhost:8000/api/genres').then(res => res.json())
+      fetch('/api/games').then(res => res.json()),
+      fetch('/api/genres').then(res => res.json())
     ])
       .then(([gamesData, genresData]) => {
         setGames(gamesData);
@@ -43,7 +43,7 @@ function Catalog() {
 
     // Obtener los IDs de la lista de deseos si el usuario ha iniciado sesión
     if (user && token) {
-      fetch('http://localhost:8000/api/wishlist', {
+      fetch('/api/wishlist', {
         headers: { Authorization: `Bearer ${token}` }
       })
         .then(res => res.json())
