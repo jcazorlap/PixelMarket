@@ -27,7 +27,7 @@ class ImportGames extends Command
             $pythonBinary = env('PYTHON_BINARY', 'python');
             
             $process = new \Symfony\Component\Process\Process([$pythonBinary, 'main.py'], $scraperDir);
-            $process->setTimeout(300); // Tiempo máximo: 5 minutos
+            $process->setTimeout(null); // Sin tiempo máximo
             
             $process->run(function ($type, $buffer) {
                 $this->output->write($buffer);
